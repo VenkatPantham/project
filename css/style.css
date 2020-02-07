@@ -1,0 +1,25 @@
+#header {
+  font-size: 30px;
+}
+
+#main_panel {
+  height: 70vh;
+}
+
+#side_panel {
+  background-color: beige;
+  height: 70vh;
+}
+
+.attraction {
+  margin: 15px;
+}
+
+.down {
+  width: 100%;
+  text-align: center;
+}
+
+li:hover {
+  cursor: pointer;
+}
