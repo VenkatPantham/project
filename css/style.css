@@ -1,3 +1,9 @@
+.navbar {
+  background: #f5f5f5;
+  margin: 0;
+  border: 0;
+}
+
 #header {
   font-size: 30px;
 }
@@ -6,20 +12,25 @@
   height: 70vh;
 }
 
-#side_panel {
-  background-color: beige;
-  height: 70vh;
+.chart {
+  margin: 20px 0px;
+  height: 300px;
+  width: 100%;
 }
 
 .attraction {
   margin: 15px;
+  text-align: left;
 }
 
 .down {
   width: 100%;
-  text-align: center;
 }
 
 li:hover {
   cursor: pointer;
+}
+
+.data_class {
+  font-size: 15px;
 }
