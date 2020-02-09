@@ -1,7 +1,8 @@
 <?php
 
 # Connect to MySQL database
-$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=leaflet;", "postgres", "postgresql");
+// $conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=leaflet;", "postgres", "postgresql");
+$conn = new PDO("pgsql:host=ec2-34-192-30-15.compute-1.amazonaws.com;port=5432;dbname=dt1cb351i5ccg;", "sznfsdvbtqkmpd", "dffd2604e97c096e0e62439ca8e1dc4bb1fab036867cefef6e1745ff578d0650");
 
 # Checking Connection
 if (!$conn) {
@@ -54,4 +55,3 @@ echo json_encode($geojson, JSON_PRETTY_PRINT);
 // fclose($fp);
 
 $conn = NULL;
-?>
