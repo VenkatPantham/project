@@ -5,7 +5,7 @@
 -- Dumped from database version 11.6 (Ubuntu 11.6-1.pgdg19.10+1)
 -- Dumped by pg_dump version 12.1 (Ubuntu 12.1-1.pgdg19.10+1)
 
--- Started on 2020-02-10 01:48:05 IST
+-- Started on 2020-02-10 02:32:32 IST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -587,7 +587,7 @@ ALTER TABLE ONLY public.project
 CREATE INDEX sidx_attractions_geom ON public.attractions USING gist (geom);
 
 
--- Completed on 2020-02-10 01:48:08 IST
+-- Completed on 2020-02-10 02:32:33 IST
 
 --
 -- PostgreSQL database dump complete
