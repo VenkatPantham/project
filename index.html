@@ -458,6 +458,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -476,6 +477,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -494,6 +496,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -512,6 +515,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -535,6 +539,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -553,6 +558,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -571,6 +577,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -589,6 +596,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -607,6 +615,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -625,6 +634,7 @@
                     layerAttractions.on("click", displayData);
                   }
                 });
+                sidebar.hide();
                 layerAttractions.addTo(mymap);
                 mymap.fitBounds(layerAttractions.getBounds());
               });
@@ -633,6 +643,13 @@
             }
 
             $("#table_data").on("click", function() {
+              detailsbar.hide();
+              $("html,body").animate(
+                {
+                  scrollTop: $("#table_data").offset().top
+                },
+                "slow"
+              );
               var i = $("#table_data").val();
               var tableData = "";
               tableData += "<table class='table table-striped'>";
@@ -646,7 +663,7 @@
               props = response.features[i].properties;
               // $.each(props, function(key, value) {
               tableData += "<tr>";
-              tableData += "<td>" + props.id + "</td>";
+              tableData += "<td>" + props.sno + "</td>";
               tableData += "<td>" + props.education + "</td>";
               tableData += "<td>" + props.area + "</td>";
               tableData += "<td>" + props.electricity_connection + "</td>";
@@ -669,7 +686,7 @@
           .append(
             "<h3>Location Details</h3>" +
               "<p class='data_class'>ID : " +
-              e.target.feature.properties.id +
+              e.target.feature.properties.sno +
               "</p>" +
               "<p class='data_class'>Area : " +
               e.target.feature.properties.area +
@@ -690,7 +707,7 @@
               e.latlng.lng +
               "</p>" +
               "<button id='table_data' class='btn btn-warning' value='" +
-              e.target.feature.properties.id +
+              e.target.feature.properties.sno +
               "'>More Details</button>"
           );
         detailsbar.show();
