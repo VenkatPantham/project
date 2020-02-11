@@ -244,17 +244,28 @@
               if (layerAttractions) {
                 layerAttractions.remove();
               }
-              // var redMarker = L.AwesomeMarkers.icon({
-              //   icon: "car",
-              //   prefix: "fa",
-              //   markerColor: "white",
-              //   iconColor: "red"
+              var redMarker = L.AwesomeMarkers.icon({
+                icon: "map-pin",
+                prefix: "fa",
+                markerColor: "green ",
+                iconColor: "blue"
+              });
+              // var redMarker = L.icon({
+              //   iconUrl: "pin.png",
+              //   // iconRetinaUrl: "my-icon@2x.png",
+              //   iconSize: [20, 20],
+              //   iconAnchor: [22, 94],
+              //   popupAnchor: [-3, -76],
+              //   shadowUrl: "my-icon-shadow.png",
+              //   shadowRetinaUrl: "my-icon-shadow@2x.png",
+              //   shadowSize: [68, 95],
+              //   shadowAnchor: [22, 94]
               // });
               layerAttractions = L.geoJSON(response, {
                 pointToLayer: function(feature, latlng) {
                   return L.marker(latlng, {
-                    // bounceOnAdd: true
-                    // icon: redMarker
+                    bounceOnAdd: true,
+                    icon: redMarker
                   });
                 },
                 onEachFeature: function(feature, layerAttractions) {
@@ -396,11 +407,11 @@
                 }
                 layerAttractions = L.geoJSON(response, {
                   pointToLayer: function(feature, latlng) {
-                    if (feature.properties.caste == "oc") {
+                    if (feature.properties.caste == "OC") {
                       oc += 1;
-                    } else if (feature.properties.caste == "bc") {
+                    } else if (feature.properties.caste == "BC") {
                       bc += 1;
-                    } else if (feature.properties.caste == "sc") {
+                    } else if (feature.properties.caste == "SC") {
                       sc += 1;
                     }
                     return L.marker(latlng);
@@ -588,7 +599,7 @@
                 }
                 layerAttractions = L.geoJSON(response, {
                   pointToLayer: function(feature, latlng) {
-                    if (feature.properties.caste == "oc") {
+                    if (feature.properties.caste == $("#btn8").text()) {
                       return L.marker(latlng);
                     }
                   },
@@ -607,7 +618,7 @@
                 }
                 layerAttractions = L.geoJSON(response, {
                   pointToLayer: function(feature, latlng) {
-                    if (feature.properties.caste == "bc") {
+                    if (feature.properties.caste == $("#btn9").text()) {
                       return L.marker(latlng);
                     }
                   },
@@ -626,7 +637,7 @@
                 }
                 layerAttractions = L.geoJSON(response, {
                   pointToLayer: function(feature, latlng) {
-                    if (feature.properties.caste == "sc") {
+                    if (feature.properties.caste == $("#btn10").text()) {
                       return L.marker(latlng);
                     }
                   },
@@ -650,7 +661,7 @@
                 },
                 "slow"
               );
-              var i = $("#table_data").val();
+              var val = $("#table_data").val();
               var tableData = "";
               tableData += "<table class='table table-striped'>";
               tableData += "<tr>";
@@ -659,17 +670,19 @@
               tableData += "<th>Area</th>";
               tableData += "<th>Electricity</th>";
               tableData += "</tr>";
-              // for (i = 0; i < response.features.length; i++) {
-              props = response.features[i].properties;
-              // $.each(props, function(key, value) {
-              tableData += "<tr>";
-              tableData += "<td>" + props.sno + "</td>";
-              tableData += "<td>" + props.education + "</td>";
-              tableData += "<td>" + props.area + "</td>";
-              tableData += "<td>" + props.electricity_connection + "</td>";
-              tableData += "</tr>";
-              tableData += "</table>";
-              // });
+              for (i = 0; i < response.features.length; i++) {
+                if (response.features[i].properties.sno === val) {
+                  props = response.features[i].properties;
+                  tableData += "<tr>";
+                  tableData += "<td>" + props.sno + "</td>";
+                  tableData += "<td>" + props.education + "</td>";
+                  tableData += "<td>" + props.area + "</td>";
+                  tableData += "<td>" + props.electricity_connection + "</td>";
+                  tableData += "</tr>";
+                  tableData += "</table>";
+                }
+                // });
+              }
               $("#table_panel")
                 .empty()
                 .append(tableData);

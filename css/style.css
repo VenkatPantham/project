@@ -34,3 +34,12 @@ li:hover {
 .data_class {
   font-size: 15px;
 }
+
+.awesome-marker-icon-transparent {
+  background: none !important;
+}
+
+#display {
+  margin: 15px 0px;
+  display: none;
+}
