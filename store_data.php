@@ -11,12 +11,12 @@ if (!$conn) {
     exit;
 }
 
-$sno = $_POST['sno'];
+// $sno = $_POST['sno'];
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 
 # However the User's Query will be passed to the DB:
-$sql = "INSERT INTO project (sno,latitude,longitude) VALUES ('$sno','$latitude','$longitude')";
+$sql = "INSERT INTO project (latitude,longitude) VALUES ('$latitude','$longitude')";
 
 # Try query or error
 $db = $conn->query($sql);

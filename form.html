@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Dat Form</title>
+    <title>Data Form</title>
     <link rel="stylesheet" href="src/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     <script src="src/jquery.min.js"></script>
@@ -11,10 +11,10 @@
     <div class="container">
       <h2>Data form</h2>
       <form>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>SNO:</label>
           <input type="text" class="form-control" name="sno" />
-        </div>
+        </div> -->
         <div class="form-group">
           <label>Latitude:</label>
           <input type="text" class="form-control" name="latitude" />
@@ -41,6 +41,7 @@
               .show();
             setTimeout(function() {
               location.href = "index.html";
+              // history.pushState(null, null, "index.html");
             }, 1500);
           },
           error: function() {

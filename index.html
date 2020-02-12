@@ -671,15 +671,16 @@
               tableData += "<th>Electricity</th>";
               tableData += "</tr>";
               for (i = 0; i < response.features.length; i++) {
-                if (response.features[i].properties.sno === val) {
+                if (response.features[i].properties.id == val) {
                   props = response.features[i].properties;
                   tableData += "<tr>";
-                  tableData += "<td>" + props.sno + "</td>";
+                  tableData += "<td>" + props.id + "</td>";
                   tableData += "<td>" + props.education + "</td>";
                   tableData += "<td>" + props.area + "</td>";
                   tableData += "<td>" + props.electricity_connection + "</td>";
                   tableData += "</tr>";
                   tableData += "</table>";
+                  break;
                 }
                 // });
               }
@@ -699,7 +700,7 @@
           .append(
             "<h3>Location Details</h3>" +
               "<p class='data_class'>ID : " +
-              e.target.feature.properties.sno +
+              e.target.feature.properties.id +
               "</p>" +
               "<p class='data_class'>Area : " +
               e.target.feature.properties.area +
@@ -720,7 +721,7 @@
               e.latlng.lng +
               "</p>" +
               "<button id='table_data' class='btn btn-warning' value='" +
-              e.target.feature.properties.sno +
+              e.target.feature.properties.id +
               "'>More Details</button>"
           );
         detailsbar.show();

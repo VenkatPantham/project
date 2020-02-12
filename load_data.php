@@ -12,7 +12,7 @@ if (!$conn) {
 }
 
 # However the User's Query will be passed to the DB:
-$sql = "SELECT * FROM project ORDER BY sno";
+$sql = "SELECT * FROM project ORDER BY id";
 
 # Try query or error
 $db = $conn->query($sql);
