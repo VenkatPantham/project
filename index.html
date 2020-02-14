@@ -55,7 +55,7 @@
             <!-- <li class="active">
               <a href="#">Link <span class="sr-only">(current)</span></a>
             </li> -->
-            <li><a href="#">Link</a></li>
+            <li><a href="form.html">Form</a></li>
             <!-- <li class="dropdown">
               <a
                 href="#"
@@ -161,7 +161,7 @@
     <div id="main_panel" class="col-md-12"></div>
     <div id="details_panel"></div>
     <div id="chartContainer" class="col-md-12 chart"></div>
-    <div id="table_panel"></div>
+    <div id="table_panel" class="col-md-12"></div>
 
     <script>
       var mymap = L.map("main_panel", {
@@ -244,12 +244,12 @@
               if (layerAttractions) {
                 layerAttractions.remove();
               }
-              var redMarker = L.AwesomeMarkers.icon({
-                icon: "map-pin",
-                prefix: "fa",
-                markerColor: "green ",
-                iconColor: "blue"
-              });
+              // var redMarker = L.AwesomeMarkers.icon({
+              //   icon: "map-pin",
+              //   prefix: "fa",
+              //   markerColor: "green ",
+              //   iconColor: "blue"
+              // });
               // var redMarker = L.icon({
               //   iconUrl: "pin.png",
               //   // iconRetinaUrl: "my-icon@2x.png",
@@ -264,8 +264,8 @@
               layerAttractions = L.geoJSON(response, {
                 pointToLayer: function(feature, latlng) {
                   return L.marker(latlng, {
-                    bounceOnAdd: true,
-                    icon: redMarker
+                    bounceOnAdd: true
+                    // icon: redMarker
                   });
                 },
                 onEachFeature: function(feature, layerAttractions) {
@@ -663,32 +663,151 @@
               );
               var val = $("#table_data").val();
               var tableData = "";
-              tableData += "<table class='table table-striped'>";
+              tableData +=
+                "<table class='table table-striped table-responsive table-bordered'>";
+              tableData += "<thead>";
               tableData += "<tr>";
               tableData += "<th>ID</th>";
-              tableData += "<th>Education</th>";
+              tableData += "<th>City</th>";
               tableData += "<th>Area</th>";
-              tableData += "<th>Electricity</th>";
+              tableData += "<th>Family Size</th>";
+              tableData += "<th>No of Children</th>";
+              tableData += "<th>Males</th>";
+              tableData += "<th>Females</th>";
+              tableData += "<th>No of working members</th>";
+              tableData += "<th>Children working below 15</th>";
+              tableData += "<th>Age <= 15</th>";
+              tableData += "<th>Age 15 <= 25</th>";
+              tableData += "<th>Age 25 <= 45</th>";
+              tableData += "<th>Age > 45</th>";
+              tableData += "<th>Education</th>";
+              tableData += "<th>Occupation</th>";
+              tableData += "<th>Type of Ration card</th>";
+              tableData += "<th>Health card</th>";
+              tableData += "<th>No of deceased people</th>";
+              tableData += "<th>No of handicapped people</th>";
+              tableData += "<th>Bikes</th>";
+              tableData += "<th>Cars</th>";
+              tableData += "<th>Tractors</th>";
+              tableData += "<th>House</th>";
+              tableData += "<th>Land</th>";
+              tableData += "<th>Gold</th>";
+              tableData += "<th>Fans</th>";
+              tableData += "<th>Televisions</th>";
+              tableData += "<th>Refrigerators</th>";
+              tableData += "<th>Heaters</th>";
+              tableData += "<th>Air conditioners</th>";
+              tableData += "<th>Computers</th>";
+              tableData += "<th>Monthly Income</th>";
+              tableData += "<th>Government Income</th>";
+              tableData += "<th>Private Income</th>";
+              tableData += "<th>Pension Income</th>";
+              tableData += "<th>Bank savings</th>";
+              tableData += "<th>Postal savings</th>";
+              tableData += "<th>Chit savings</th>";
+              tableData += "<th>Other savings</th>";
+              tableData += "<th>Caste</th>";
+              tableData += "<th>Nearest Hospital(kms)</th>";
+              tableData += "<th>Nearest Primary school(kms)</th>";
+              tableData += "<th>Nearest High school(kms)</th>";
+              tableData += "<th>Nearest College(kms)</th>";
+              tableData += "<th>Nearest University(kms)</th>";
+              tableData += "<th>Poverty status</th>";
+              tableData += "<th>Income status</th>";
+              tableData += "<th>Agricultural status</th>";
+              tableData += "<th>Type of building</th>";
+              tableData += "<th>Type of water source</th>";
+              tableData += "<th>Source of drinking water</th>";
+              tableData += "<th>Presence of toilet facility</th>";
+              tableData += "<th>Electricity connection</th>";
+              tableData += "<th>Gas connection</th>";
+              tableData += "<th>Cable connection</th>";
+              tableData += "<th>Internet connection</th>";
+              tableData += "<th>Electricity Bill</th>";
+              tableData += "<th>No of LIC policies</th>";
+              tableData += "<th>Latitude</th>";
+              tableData += "<th>Longitude</th>";
               tableData += "</tr>";
+              tableData += "</thead>";
               for (i = 0; i < response.features.length; i++) {
                 if (response.features[i].properties.id == val) {
                   props = response.features[i].properties;
+                  latlng = response.features[i].geometry.coordinates;
+                  tableData += "<tbody>";
                   tableData += "<tr>";
                   tableData += "<td>" + props.id + "</td>";
-                  tableData += "<td>" + props.education + "</td>";
+                  tableData += "<td>" + props.city + "</td>";
                   tableData += "<td>" + props.area + "</td>";
+                  tableData += "<td>" + props.family_size + "</td>";
+                  tableData += "<td>" + props.no_of_children + "</td>";
+                  tableData += "<td>" + props.male + "</td>";
+                  tableData += "<td>" + props.female + "</td>";
+                  tableData += "<td>" + props.no_of_working_members + "</td>";
+                  tableData += "<td>" + props.child_working_below_15 + "</td>";
+                  tableData += "<td>" + props.age_lt15 + "</td>";
+                  tableData += "<td>" + props.age_15btw25 + "</td>";
+                  tableData += "<td>" + props.age_25btw45 + "</td>";
+                  tableData += "<td>" + props.age_gt45 + "</td>";
+                  tableData += "<td>" + props.education + "</td>";
+                  tableData += "<td>" + props.occupation + "</td>";
+                  tableData += "<td>" + props.type_of_ration_card + "</td>";
+                  tableData += "<td>" + props.health_card + "</td>";
+                  tableData += "<td>" + props.no_of_deceased_people + "</td>";
+                  tableData +=
+                    "<td>" + props.no_of_handicapped_people + "</td>";
+                  tableData += "<td>" + props.bike + "</td>";
+                  tableData += "<td>" + props.car + "</td>";
+                  tableData += "<td>" + props.tractor + "</td>";
+                  tableData += "<td>" + props.house + "</td>";
+                  tableData += "<td>" + props.land + "</td>";
+                  tableData += "<td>" + props.gold + "</td>";
+                  tableData += "<td>" + props.fan + "</td>";
+                  tableData += "<td>" + props.television + "</td>";
+                  tableData += "<td>" + props.refrigerator + "</td>";
+                  tableData += "<td>" + props.heater + "</td>";
+                  tableData += "<td>" + props.air_conditioner + "</td>";
+                  tableData += "<td>" + props.computer + "</td>";
+                  tableData += "<td>" + props.monthly_income + "</td>";
+                  tableData += "<td>" + props.government_income + "</td>";
+                  tableData += "<td>" + props.private_income + "</td>";
+                  tableData += "<td>" + props.pension_income + "</td>";
+                  tableData += "<td>" + props.bank_savings + "</td>";
+                  tableData += "<td>" + props.postal_savings + "</td>";
+                  tableData += "<td>" + props.chit_savings + "</td>";
+                  tableData += "<td>" + props.other_savings + "</td>";
+                  tableData += "<td>" + props.caste + "</td>";
+                  tableData += "<td>" + props.nearest_hospital + "</td>";
+                  tableData += "<td>" + props.nearest_primary_school + "</td>";
+                  tableData += "<td>" + props.nearest_high_school + "</td>";
+                  tableData += "<td>" + props.nearest_college + "</td>";
+                  tableData += "<td>" + props.nearest_university + "</td>";
+                  tableData += "<td>" + props.poverty_status + "</td>";
+                  tableData += "<td>" + props.income_status + "</td>";
+                  tableData += "<td>" + props.agricultural_status + "</td>";
+                  tableData += "<td>" + props.type_of_building + "</td>";
+                  tableData += "<td>" + props.type_of_water_source + "</td>";
+                  tableData +=
+                    "<td>" + props.source_of_drinking_water + "</td>";
+                  tableData +=
+                    "<td>" + props.presence_of_toilet_facility + "</td>";
                   tableData += "<td>" + props.electricity_connection + "</td>";
+                  tableData += "<td>" + props.gas_connection + "</td>";
+                  tableData += "<td>" + props.cable_connection + "</td>";
+                  tableData += "<td>" + props.internet_connection + "</td>";
+                  tableData += "<td>" + props.electricity_bill + "</td>";
+                  tableData += "<td>" + props.no_of_lic_policies + "</td>";
+                  tableData += "<td>" + latlng[1] + "</td>";
+                  tableData += "<td>" + latlng[0] + "</td>";
                   tableData += "</tr>";
-                  tableData += "</table>";
+                  tableData += "</tbody";
                   break;
                 }
-                // });
               }
+              tableData += "</table>";
+
               $("#table_panel")
                 .empty()
                 .append(tableData);
-              // }
-              // console.log(detailsbar.isVisible());
             });
           }
         });
@@ -702,17 +821,23 @@
               "<p class='data_class'>ID : " +
               e.target.feature.properties.id +
               "</p>" +
+              "<p class='data_class'>City : " +
+              e.target.feature.properties.city +
+              "</p>" +
               "<p class='data_class'>Area : " +
               e.target.feature.properties.area +
               "</p>" +
               "<p class='data_class'>Caste : " +
               e.target.feature.properties.caste +
               "</p>" +
-              "<p class='data_class'>Education : " +
-              e.target.feature.properties.education +
+              "<p class='data_class'>Monthly Income : " +
+              e.target.feature.properties.monthly_income +
               "</p>" +
-              "<p class='data_class'>Electricity Status: " +
-              e.target.feature.properties.electricity_connection +
+              "<p class='data_class'>Type of house : " +
+              e.target.feature.properties.type_of_building +
+              "</p>" +
+              "<p class='data_class'>Poverty Status : " +
+              e.target.feature.properties.poverty_status +
               "</p>" +
               "<p class='data_class'>Latitude : " +
               e.latlng.lat +

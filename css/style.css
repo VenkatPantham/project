@@ -43,3 +43,11 @@ li:hover {
   margin: 15px 0px;
   display: none;
 }
+
+#table_panel {
+  overflow-x: auto;
+}
+
+#submit_data {
+  margin-bottom: 10px;
+}

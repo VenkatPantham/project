@@ -11,19 +11,448 @@
     <div class="container">
       <h2>Data form</h2>
       <form>
-        <!-- <div class="form-group">
-          <label>SNO:</label>
-          <input type="text" class="form-control" name="sno" />
-        </div> -->
+        <div class="form-group">
+          <label>City:</label>
+          <input type="text" class="form-control" name="city" required />
+        </div>
+        <div class="form-group">
+          <label>Area:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="area"
+            placeholder="Rural / Urban"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Family Size:</label>
+          <input type="text" class="form-control" name="family_size" required />
+        </div>
+        <div class="form-group">
+          <label>No of Males in the Family:</label>
+          <input type="text" class="form-control" name="male" required />
+        </div>
+        <div class="form-group">
+          <label>No of Females in the Family:</label>
+          <input type="text" class="form-control" name="female" required />
+        </div>
+        <div class="form-group">
+          <label>No of People's age below 15:</label>
+          <input type="text" class="form-control" name="age_lt15" required />
+        </div>
+        <div class="form-group">
+          <label>No of People's age between 15 and 25:</label>
+          <input type="text" class="form-control" name="age_15btw25" required />
+        </div>
+        <div class="form-group">
+          <label>No of People's age between 25 and 45:</label>
+          <input type="text" class="form-control" name="age_25btw45" required />
+        </div>
+        <div class="form-group">
+          <label>No of People's age above 45:</label>
+          <input type="text" class="form-control" name="age_gt45" required />
+        </div>
+        <div class="form-group">
+          <label>Marital Status:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="marital_status"
+            placeholder="Married / Not Married"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of children in the family:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="no_of_children"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Education:</label>
+          <input type="text" class="form-control" name="education" required />
+        </div>
+        <div class="form-group">
+          <label>No of working members in the family:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="no_of_working_members"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of children working age below 15:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="child_working_below_15"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Occupation:</label>
+          <input type="text" class="form-control" name="occupation" required />
+        </div>
+        <div class="form-group">
+          <label>Type of Ration card:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="type_of_ration_card"
+            placeholder="White / Others"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Health card:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="health_card"
+            placeholder="Yes / No"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of deceased people in the family:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="no_of_deceased_people"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of handicapped people in the family:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="no_of_handicapped_people"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of cars for the family:</label>
+          <input type="text" class="form-control" name="car" required />
+        </div>
+        <div class="form-group">
+          <label>No of bikes for the family:</label>
+          <input type="text" class="form-control" name="bike" required />
+        </div>
+        <div class="form-group">
+          <label>No of tractors for the family:</label>
+          <input type="text" class="form-control" name="tractor" required />
+        </div>
+        <div class="form-group">
+          <label>No of individual houses for the family:</label>
+          <input type="text" class="form-control" name="house" required />
+        </div>
+        <div class="form-group">
+          <label>Acres of land for the family:</label>
+          <input type="text" class="form-control" name="land" required />
+        </div>
+        <div class="form-group">
+          <label>No of televisions for the family:</label>
+          <input type="text" class="form-control" name="television" required />
+        </div>
+        <div class="form-group">
+          <label>No of refrigerators for the family:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="refrigerator"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of air conditioners for the family:</label>
+          <input type="text" class="form-control" name="air_conditioner" required />
+        </div>
+        <div class="form-group">
+          <label>No of heaters for the family:</label>
+          <input type="text" class="form-control" name="heater" required />
+        </div>
+        <div class="form-group">
+          <label>No of fans for the family:</label>
+          <input type="text" class="form-control" name="fan" required />
+        </div>
+        <div class="form-group">
+          <label>No of computers for the family:</label>
+          <input type="text" class="form-control" name="computer" required />
+        </div>
+        <div class="form-group">
+          <label>Amount of gold present available in the family(grams):</label>
+          <input type="text" class="form-control" name="gold" required />
+        </div>
+        <div class="form-group">
+          <label>Montly Income:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="monthly_income"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Government Income:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="government_income"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Private Income:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="private_income"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Pension Income:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="pension_income"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Bank Savings:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="bank_savings"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Postal Savings:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="postal_savings"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Chit Savings:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="chit_savings"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Other Savings:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="other_savings"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Caste:</label>
+          <input type="text" class="form-control" name="caste" required />
+        </div>
+        <div class="form-group">
+          <label>Nearest Hospital(Kilometers):</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nearest_hospital"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Nearest Primary school(Kilometers):</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nearest_primary_school"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Nearest High school(Kilometers):</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nearest_high_school"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Nearest College(Kilometers):</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nearest_college"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Nearest University(Kilometers):</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nearest_university"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Agricultural products status:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="agricultural_status"
+            placeholder="Increase / Decrease / Remains Same"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Income status:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="income_status"
+            placeholder="Increase / Decrease / Remains Same"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Poverty status:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="poverty_status"
+            placeholder="Middle / Poor / Very Poor"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Type of building:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="type_of_building"
+            placeholder="Shed / One Floor / Two Floor"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Type of water source:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="type_of_water_source"
+            placeholder="Bore / Tap"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Source of Drinking water:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="source_of_drinking_water"
+            placeholder="Inside / Outside"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Presence of Toilet facility:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="presence_of_toilet_facility"
+            placeholder="Inside / Outside"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Electricity Connection:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="electricity_connection"
+            placeholder="Yes / No"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Gas Connection:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="gas_connection"
+            placeholder="Yes / No"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Cable Connection:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="cable_connection"
+            placeholder="Yes / No"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Internet Connection:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="internet_connection"
+            placeholder="Yes / No"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Electricity Bill:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="electricity_bill"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>No of LIC policies:</label>
+          <input
+            type="text"
+            class="form-control"
+            name="no_of_lic_policies"
+            required
+          />
+        </div>
         <div class="form-group">
           <label>Latitude:</label>
-          <input type="text" class="form-control" name="latitude" />
+          <input type="text" class="form-control" name="latitude" required />
         </div>
         <div class="form-group">
           <label>Longitude:</label>
-          <input type="text" class="form-control" name="longitude" />
+          <input type="text" class="form-control" name="longitude" required />
         </div>
-        <button id="sub" type="submit" class="btn btn-default">Submit</button>
+        <button
+          id="submit_data"
+          type="submit"
+          class="form-control btn btn-default"
+        >
+          Submit
+        </button>
       </form>
       <div id="display"></div>
     </div>
@@ -39,6 +468,12 @@
               .addClass("alert alert-success")
               .append("<strong>Success !</strong> Data successfully uploaded.")
               .show();
+            $("html,body").animate(
+              {
+                scrollTop: $("#display").offset().top
+              },
+              "slow"
+            );
             setTimeout(function() {
               location.href = "index.html";
               // history.pushState(null, null, "index.html");
@@ -49,6 +484,12 @@
               .addClass("alert alert-danger")
               .append("<strong>Fail !</strong> Data upload failed.")
               .show();
+            $("html,body").animate(
+              {
+                scrollTop: $("#display").offset().top
+              },
+              "slow"
+            );
           }
         });
       });
