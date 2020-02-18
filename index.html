@@ -29,11 +29,6 @@
   </head>
 
   <body>
-    <!-- <div id="header" class="col-md-12">
-      <h1 class="text-center">
-        Poverty
-      </h1>
-    </div> -->
     <nav
       class="navbar navbar-expand-lg navbar-light bg-light shadow p-2 mb-3 bg-white rounded"
     >
@@ -85,72 +80,73 @@
             <a class="nav-link" href="#">About Us</a>
           </li>
         </ul>
-        <!-- <form class="form-inline my-2 my-lg-0">
-          <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form> -->
       </div>
     </nav>
 
     <div id="side_panel">
       <h2 class="text-center">Categories</h2>
-      <div class="dropdown attraction">
-        <button
-          id="education dropdownMenuButton"
-          class="form-control btn btn-primary dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-        >
-          Education
-        </button>
-        <ul class="dropdown-menu down" aria-labelledby="dropdownMenuButton">
-          <li class="dropdown-item" id="btn1">SSC</li>
-          <li class="dropdown-item" id="btn2">Intermediate</li>
-          <li class="dropdown-item" id="btn3">Graduation</li>
-          <li class="dropdown-item" id="btn4">Post Graduation</li>
-          <li class="dropdown-item" id="btn5">Others</li>
-        </ul>
-      </div>
-      <div class="dropdown attraction">
-        <button
-          id="area dropdownMenuButton"
-          class="form-control btn btn-primary dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-        >
-          Area
-        </button>
-        <ul class="dropdown-menu down" aria-labelledby="dropdownMenuButton">
-          <li class="dropdown-item" id="btn6">Rural</li>
-          <li class="dropdown-item" id="btn7">Urban</li>
-        </ul>
-      </div>
-      <div class="dropdown attraction">
-        <button
-          id="caste  dropdownMenuButton"
-          class="form-control btn btn-primary dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-        >
-          Caste
-        </button>
-        <ul class="dropdown-menu down" aria-labelledby="dropdownMenuButton">
-          <li class="dropdown-item" id="btn8">OC</li>
-          <li class="dropdown-item" id="btn9">BC</li>
-          <li class="dropdown-item" id="btn10">SC</li>
-        </ul>
+      <div class="container">
+        <div class="btn-block btn-group">
+          <button type="button" id="education" class="btn btn-primary">
+            Education
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" id="btn1">SSC</li>
+            <li class="dropdown-item" id="btn2">Intermediate</li>
+            <li class="dropdown-item" id="btn3">Graduation</li>
+            <li class="dropdown-item" id="btn4">Post Graduation</li>
+            <li class="dropdown-item" id="btn5">Others</li>
+          </ul>
+        </div>
+        <div class="btn-block btn-group">
+          <button type="button" id="area" class="btn btn-primary">Area</button>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" id="btn6">Rural</li>
+            <li class="dropdown-item" id="btn7">Urban</li>
+          </ul>
+        </div>
+        <div class="btn-block btn-group">
+          <button type="button" id="caste" class="btn btn-primary">
+            Caste
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" id="btn8">OC</li>
+            <li class="dropdown-item" id="btn9">BC</li>
+            <li class="dropdown-item" id="btn10">SC</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div id="main_panel" class="col-md-12"></div>
     <div id="details_panel"></div>
-    <div class="row">
+    <div class="row col-md-12">
       <div id="pieChartContainer" class="col-md-6 chart"></div>
       <div id="barChartContainer" class="col-md-6 chart"></div>
     </div>
@@ -282,11 +278,234 @@
       var data;
       var props;
       var marker;
+      var wardLayer;
+      var slumLayer;
+      var policeLayer;
+      var officeLayer;
+      var shopLayer;
+      var anganwadiLayer;
+      var bankLayer;
+      var hospitalLayer;
+      var medicalLayer;
+      var hotelLayer;
+      var schoolLayer;
+      var parkLayer;
+      var waterLayer;
       var petrolLayer;
+
+      wardLayer = L.geoJSON.ajax("load_wards.php", {
+        // style: {
+        // fillColor: "blue",
+        // weight: 2,
+        // opacity: 1,
+        // color: "black", //Outline color
+        // fillOpacity: 0.7,
+        // },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup("Ward No : " + feature.properties.ward_no);
+        }
+      });
+
+      slumLayer = L.geoJSON.ajax("load_slums.php", {
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup("Area Name : " + feature.properties.name);
+        }
+      });
+
+      policeLayer = L.geoJSON.ajax("load_police.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "siren-on",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      officeLayer = L.geoJSON.ajax("load_offices.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "building",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      shopLayer = L.geoJSON.ajax("load_shops.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "shopping-bag",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        }
+      });
+
+      anganwadiLayer = L.geoJSON.ajax("load_anganwadi.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "child",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        }
+      });
+
+      bankLayer = L.geoJSON.ajax("load_banks.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "university",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      hospitalLayer = L.geoJSON.ajax("load_hospitals.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "clinic-medical",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      medicalLayer = L.geoJSON.ajax("load_medicals.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "briefcase-medical",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      hotelLayer = L.geoJSON.ajax("load_hotels.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "hotel",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      schoolLayer = L.geoJSON.ajax("load_schools.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "school",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      parkLayer = L.geoJSON.ajax("load_parks.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "tree-alt",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
+
+      waterLayer = L.geoJSON.ajax("load_water.php", {
+        pointToLayer: function(response, latlng) {
+          marker = L.AwesomeMarkers.icon({
+            icon: "tint",
+            prefix: "fa",
+            markerColor: "red",
+            iconColor: "white"
+          });
+          return L.marker(latlng, {
+            bounceOnAdd: true,
+            icon: marker
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
+        }
+      });
 
       petrolLayer = L.geoJSON.ajax("load_petrolbunks.php", {
         pointToLayer: function(response, latlng) {
-          // console.log(response.properties.name);
           marker = L.AwesomeMarkers.icon({
             icon: "gas-pump",
             prefix: "fa",
@@ -294,11 +513,34 @@
             iconColor: "white"
           });
           return L.marker(latlng, {
-            // bounceOnAdd: true
+            bounceOnAdd: true,
             icon: marker
-          }).bindPopup(response.properties.name);
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          layer.bindPopup(feature.properties.name);
         }
       });
+
+      var overlays = {
+        Wards: wardLayer,
+        Slums: slumLayer,
+        "Police Stations": policeLayer,
+        "Government Offices": officeLayer,
+        "Ration Shops": shopLayer,
+        "Anganwadi Kendrams": anganwadiLayer,
+        Banks: bankLayer,
+        Hospitals: hospitalLayer,
+        "Medical Shops": medicalLayer,
+        "Hotels and Restaurants": hotelLayer,
+        "Schools and Colleges": schoolLayer,
+        Parks: parkLayer,
+        "Water Tanks": waterLayer,
+        "Petrol Pumps": petrolLayer
+        // "Drawn Items": items
+      };
+
+      var ctlLayers = L.control.layers(basemaps, overlays).addTo(mymap);
 
       // $.ajax({
       //   url: "load_allfeatures.php",
@@ -343,13 +585,6 @@
 
       // var items = new L.FeatureGroup().addTo(mymap);
 
-      var overlays = {
-        "Petrol Pumps": petrolLayer
-        // "Drawn Items": items
-      };
-
-      var ctlLayers = L.control.layers(basemaps, overlays).addTo(mymap);
-
       setInterval(function() {
         $.ajax({
           url: "load_data.php",
@@ -364,31 +599,23 @@
               // var redMarker = L.AwesomeMarkers.icon({
               //   icon: "map-pin",
               //   prefix: "fa",
-              //   markerColor: "green ",
-              //   iconColor: "blue"
-              // });
-              // var redMarker = L.icon({
-              //   iconUrl: "pin.png",
-              //   // iconRetinaUrl: "my-icon@2x.png",
-              //   iconSize: [20, 20],
-              //   iconAnchor: [22, 94],
-              //   popupAnchor: [-3, -76],
-              //   shadowUrl: "my-icon-shadow.png",
-              //   shadowRetinaUrl: "my-icon-shadow@2x.png",
-              //   shadowSize: [68, 95],
-              //   shadowAnchor: [22, 94]
+              //   markerColor: "transparent",
+              //   iconColor: "#3480eb"
               // });
               layerAttractions = L.geoJSON(response, {
                 pointToLayer: function(feature, latlng) {
                   if (feature.properties.city == "Rajahmundry") {
                     rjy += 1;
+                    return L.marker(latlng, {
+                      // icon: redMarker
+                    });
                   } else if (feature.properties.city == "Prathipadu") {
                     ptp += 1;
                   }
-                  return L.marker(latlng, {
-                    // bounceOnAdd: true
-                    // icon: redMarker
-                  });
+                  // return L.marker(latlng, {
+                  // bounceOnAdd: true
+                  // icon: redMarker
+                  // });
                 },
                 onEachFeature: function(feature, layerAttractions) {
                   layerAttractions.on("click", displayData);

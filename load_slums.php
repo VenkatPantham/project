@@ -10,7 +10,7 @@ if (!$conn) {
 }
 
 # However the User's Query will be passed to the DB:
-$sql = "SELECT *,ST_AsGeoJSON(the_geom) as geom FROM petrol_bunks ORDER BY gid";
+$sql = "SELECT *,ST_AsGeoJSON(the_geom) as geom FROM slums ORDER BY gid";
 
 # Try query or error
 $db = $conn->query($sql);
