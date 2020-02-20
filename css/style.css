@@ -57,3 +57,14 @@ li:hover {
 .table {
   white-space: nowrap;
 }
+
+.table-responsive {
+  min-height: auto;
+  max-height: 300px;
+  overflow: scroll;
+}
+
+thead tr:nth-child(1) th {
+  position: sticky;
+  top: 0;
+}

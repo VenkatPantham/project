@@ -35,7 +35,10 @@
           <li class="nav-item">
             <a class="nav-link" href="form.html">Form</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -53,26 +56,101 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
             </div>
-          </li>
+          </li> -->
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
+          <li>
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+            >
+              Upload Files
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModalLong"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLongTitle"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                      Upload your Files !!!
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      id="closeButton1"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="alert alert-info">
+                      <strong>Info!</strong> Upload only CSV files.
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <label>Table Name :</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="tableName"
+                          name="tableName"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Custom File :</label>
+                        <div class="custom-file">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            id="fileToUpload"
+                            name="fileToUpload"
+                          />
+                          <label
+                            id="chooseFile"
+                            class="custom-file-label"
+                            for="customFile"
+                            >Choose file</label
+                          >
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        Upload
+                      </button>
+                    </form>
+                    <div id="display"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="closeButton2"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
-        <!-- <form class="form-inline my-2 my-lg-0">
-        <input
-          class="form-control mr-sm-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-          Search
-        </button>
-      </form> -->
       </div>
     </nav>
+
     <div class="container">
       <h2>Data form</h2>
       <form>
@@ -527,6 +605,43 @@
       <div id="display"></div>
     </div>
     <script>
+      $(".custom-file-input").on("change", function() {
+        var fileName = $(this)
+          .val()
+          .split("\\")
+          .pop();
+        $(this)
+          .siblings(".custom-file-label")
+          .addClass("selected")
+          .html(fileName);
+      });
+
+      $("form").on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+          type: "post",
+          url: "upload_file.php",
+          data: new FormData(this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function(response) {
+            // console.log(response);
+            $("#display")
+              .empty()
+              .addClass("alert alert-secondary")
+              .append(response)
+              .show();
+          }
+        });
+      });
+
+      $("#closeButton1,#closeButton2").on("click", function() {
+        $("#tableName").val("");
+        $("#chooseFile").text("Choose File");
+        $("#display").empty();
+      });
+
       $("form").on("submit", function(e) {
         e.preventDefault();
         $.ajax({

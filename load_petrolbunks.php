@@ -1,6 +1,6 @@
 <?php
 
-# Connect to MySQL database
+# Connect to PostgreSQL database
 $conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=rajahmundry;", "postgres", "postgresql");
 
 # Checking Connection
