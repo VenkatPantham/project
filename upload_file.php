@@ -5,7 +5,7 @@ $uploadOk = 1;
 $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
 # Connect to Postgres database
-$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=trial;", "postgres", "postgresql");
+$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=leaflet;", "postgres", "postgresql");
 
 # Checking Connection
 if (!$conn) {
