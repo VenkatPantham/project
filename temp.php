@@ -1,7 +1,7 @@
 <?php
 
 # Connect to PostgreSQL database
-$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=leaflet;", "postgres", "postgresql");
+$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=trial;", "postgres", "postgresql");
 
 # Checking Connection
 if (!$conn) {
@@ -9,12 +9,12 @@ if (!$conn) {
 	exit;
 }
 
+$table = 'project';
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	foreach ($_POST["table"] as $value) {
 		$table = $value;
 	}
-} else {
-	$table = 'project';
 }
 
 # However the User's Query will be passed to the DB:
