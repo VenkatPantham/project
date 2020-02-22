@@ -68,3 +68,15 @@ thead tr:nth-child(1) th {
   position: sticky;
   top: 0;
 }
+
+#tableMenu {
+  margin: 0px 10px;
+}
+
+#displayMaps {
+  text-transform: capitalize;
+}
+
+#optionData {
+  text-transform: capitalize;
+}

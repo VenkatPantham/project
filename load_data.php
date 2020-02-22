@@ -10,9 +10,7 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-	foreach ($_POST["table"] as $value) {
-		$table = $value;
-	}
+	$table = $_POST["table"];
 } else {
 	$table = 'project';
 }
@@ -26,8 +24,6 @@ if (!$db) {
 	echo 'An SQL error occured';
 	exit;
 }
-
-// echo json_encode($tables, JSON_PRETTY_PRINT);
 
 # Build GeoJSON feature collection array
 $geojson = array(

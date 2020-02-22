@@ -78,6 +78,11 @@
           <li class="nav-item">
             <a class="nav-link" href="#">About Us</a>
           </li>
+          <li id="tableMenu" class="nav-item">
+            <form>
+              <select id="displayMaps" class="form-control"> </select>
+            </form>
+          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
@@ -265,7 +270,6 @@
             cache: false,
             processData: false,
             success: function(response) {
-              // console.log(response);
               $("#display")
                 .empty()
                 .addClass("alert alert-secondary")
@@ -283,8 +287,8 @@
 
         var buttonData = "";
         var mymap = L.map("main_panel", {
-          center: [17.0781471, 81.9903124],
-          zoom: 10,
+          center: [17.0314102,81.8559891],
+          zoom: 11,
           zoomControl: false,
           attributionControl: false
         });
@@ -297,8 +301,8 @@
         // );
         // mymap.addLayer(backgroundLayer);
 
-        // var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
-        var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
+        var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        // var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
         var lyrTopo = L.tileLayer.provider("OpenTopoMap");
         var lyrImagery = L.tileLayer.provider("Esri.WorldImagery");
         // var lyrWaterColor = L.tileLayer.provider("Stamen.Watercolor");
@@ -675,575 +679,581 @@
           ]
         }).addTo(mymap);
 
-        setInterval(function() {
-          // $.ajax({
-          //   url: "load_tables.php",
-          //   dataType: "json",
-          //   success: function(response) {
-          //     length = response.length;
-          //     buttonData = "";
-          //     buttonData += "<form id='displayMaps'>";
-          //     for (var i = 0; i < length; i++) {
-          //       buttonData +=
-          //         "<input type='submit' class='dropdown-item' name='table[]' value='" +
-          //         response[i].table_name +
-          //         "'>";
-          //     }
-          //     buttonData += "</form>";
-          //     $("#dropdownTable")
-          //       .empty()
-          //       .append(buttonData);
-          //   }
-          // });
+        $.ajax({
+          url: "load_data.php",
+          dataType: "json",
+          success: function(response) {
+            displayMarkers(response);
+          }
+        });
 
-          // $("#displayMaps").on("submit", function(e) {
-          //   e.preventDefault();
-          //   $.ajax({
-          //     type: "post",
-          //     url: "load_data.php",
-          //     data: $("#displayMaps").serialize(),
-          //     success: function(response) {
-          //       displayMarkers();
-          //     }
-          //   });
-          // });
+        setInterval(function() {
           $.ajax({
-            url: "load_data.php",
+            url: "load_tables.php",
             dataType: "json",
             success: function(response) {
-              if (JSON.stringify(response) !== JSON.stringify(data)) {
-                var rjy = 0;
-                var ptp = 0;
-                if (layerAttractions) {
-                  layerAttractions.remove();
-                }
-                // var redMarker = L.AwesomeMarkers.icon({
-                //   icon: "map-pin",
-                //   prefix: "fa",
-                //   markerColor: "transparent",
-                //   iconColor: "#3480eb"
-                // });
-                layerAttractions = L.geoJSON(response, {
-                  pointToLayer: function(feature, latlng) {
-                    if (feature.properties.city == "Rajahmundry") {
-                      rjy += 1;
-                    } else if (feature.properties.city == "Prathipadu") {
-                      ptp += 1;
-                    }
-                    return L.marker(latlng, {
-                      // bounceOnAdd: true
-                      // icon: redMarker
-                    });
-                  },
-                  onEachFeature: function(feature, layerAttractions) {
-                    layerAttractions.on("click", displayData);
-                  }
-                });
-                layerAttractions.addTo(mymap);
-                mymap.fitBounds(layerAttractions.getBounds());
-                // markerLayer = L.markerClusterGroup();
-                // markerLayer.addLayer(layerAttractions).addTo(mymap);
-                // mymap.fitBounds(markerLayer.getBounds());
-
-                var pieChart = new CanvasJS.Chart("pieChartContainer", {
-                  animationEnabled: true,
-                  theme: "light2",
-                  title: {
-                    text: "Poverty Citites (Percentage)"
-                  },
-                  data: [
-                    {
-                      type: "pie",
-                      showInLegend: true,
-                      //   toolTipContent: "{y} - #percent %",
-                      toolTipContent: "#percent %",
-                      legendText: "{indexLabel}",
-                      dataPoints: [
-                        {
-                          y: rjy,
-                          indexLabel: "Rajahmundry"
-                        },
-                        {
-                          y: ptp,
-                          indexLabel: "Prathipadu"
-                        }
-                      ]
-                    }
-                  ]
-                });
-                pieChart.render();
-                var barChart = new CanvasJS.Chart("barChartContainer", {
-                  animationEnabled: true,
-                  theme: "light2", // "light1", "light2", "dark1", "dark2"
-                  title: {
-                    text: "Poverty Cities (Number)"
-                  },
-                  axisY: {
-                    title: "City Statistics"
-                  },
-                  data: [
-                    {
-                      type: "column",
-                      showInLegend: true,
-                      legendMarkerColor: "grey",
-                      legendText: "Cities",
-                      dataPoints: [
-                        { y: rjy, label: "Rajahmundry" },
-                        { y: ptp, label: "Prathipadu" }
-                      ]
-                    }
-                  ]
-                });
-                barChart.render();
-
-                $("#education").on("click", function() {
-                  var ssc = 0;
-                  var inter = 0;
-                  var graduation = 0;
-                  var post = 0;
-                  var others = 0;
-
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.education == "SSC") {
-                        ssc += 1;
-                      } else if (
-                        feature.properties.education == "Intermediate"
-                      ) {
-                        inter += 1;
-                      } else if (feature.properties.education == "Graduation") {
-                        graduation += 1;
-                      } else if (
-                        feature.properties.education == "Post Graduation"
-                      ) {
-                        post += 1;
-                      } else {
-                        others += 1;
-                      }
-                      // return L.marker(latlng);
-                    }
-                    // onEachFeature: function(feature, layerAttractions) {
-                    //   layerAttractions.on("click", displayData);
-                    // }
-                  });
-                  // layerAttractions.addTo(mymap);
-                  // mymap.fitBounds(layerAttractions.getBounds());
-
-                  var pieChart = new CanvasJS.Chart("pieChartContainer", {
-                    animationEnabled: true,
-                    theme: "light2",
-                    title: {
-                      text: "Education Levels (Percentage)"
-                    },
-                    data: [
-                      {
-                        type: "pie",
-                        showInLegend: true,
-                        //   toolTipContent: "{y} - #percent %",
-                        toolTipContent: "#percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                          {
-                            y: ssc,
-                            indexLabel: "SSC"
-                          },
-                          {
-                            y: inter,
-                            indexLabel: "Intermediate"
-                          },
-                          {
-                            y: graduation,
-                            indexLabel: "Graduation"
-                          },
-                          {
-                            y: post,
-                            indexLabel: "Post Graduation"
-                          },
-                          {
-                            y: others,
-                            indexLabel: "Others"
-                          }
-                        ]
-                      }
-                    ]
-                  });
-                  pieChart.render();
-                  var barChart = new CanvasJS.Chart("barChartContainer", {
-                    animationEnabled: true,
-                    theme: "light2", // "light1", "light2", "dark1", "dark2"
-                    title: {
-                      text: "Education Levels"
-                    },
-                    axisY: {
-                      title: "Educational Statistics (Number)"
-                    },
-                    data: [
-                      {
-                        type: "column",
-                        showInLegend: true,
-                        legendMarkerColor: "grey",
-                        legendText: "Stages of Education",
-                        dataPoints: [
-                          { y: ssc, label: "SSC" },
-                          { y: inter, label: "Intermediate" },
-                          { y: graduation, label: "Graduation" },
-                          { y: post, label: "Post Graduation" },
-                          { y: others, label: "Others" }
-                        ]
-                      }
-                    ]
-                  });
-                  barChart.render();
-                });
-
-                $("#area").on("click", function() {
-                  var rural = 0;
-                  var urban = 0;
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.area == "Rural") {
-                        rural += 1;
-                      } else if (feature.properties.area == "Urban") {
-                        urban += 1;
-                      }
-                      // return L.marker(latlng);
-                    }
-                    // onEachFeature: function(feature, layerAttractions) {
-                    //   layerAttractions.on("click", displayData);
-                    // }
-                  });
-                  // layerAttractions.addTo(mymap);
-                  // mymap.fitBounds(layerAttractions.getBounds());
-
-                  var pieChart = new CanvasJS.Chart("pieChartContainer", {
-                    animationEnabled: true,
-                    theme: "light2",
-                    title: {
-                      text: "Types of Area (Percentage)"
-                    },
-                    data: [
-                      {
-                        type: "pie",
-                        showInLegend: true,
-                        //   toolTipContent: "{y} - #percent %",
-                        toolTipContent: "#percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                          {
-                            y: rural,
-                            indexLabel: "Rural"
-                          },
-                          {
-                            y: urban,
-                            indexLabel: "Urban"
-                          }
-                        ]
-                      }
-                    ]
-                  });
-                  pieChart.render();
-                  var barChart = new CanvasJS.Chart("barChartContainer", {
-                    animationEnabled: true,
-                    theme: "light2", // "light1", "light2", "dark1", "dark2"
-                    title: {
-                      text: "Types of Area (Number)"
-                    },
-                    axisY: {
-                      title: "Area Statistics"
-                    },
-                    data: [
-                      {
-                        type: "column",
-                        showInLegend: true,
-                        legendMarkerColor: "grey",
-                        legendText: "Area types",
-                        dataPoints: [
-                          { y: rural, label: "Rural" },
-                          { y: urban, label: "Urban" }
-                        ]
-                      }
-                    ]
-                  });
-                  barChart.render();
-                });
-
-                $("#caste").on("click", function() {
-                  var oc = 0;
-                  var bc = 0;
-                  var sc = 0;
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.caste == "OC") {
-                        oc += 1;
-                      } else if (feature.properties.caste == "BC") {
-                        bc += 1;
-                      } else if (feature.properties.caste == "SC") {
-                        sc += 1;
-                      }
-                      // return L.marker(latlng);
-                    }
-                    // onEachFeature: function(feature, layerAttractions) {
-                    //   layerAttractions.on("click", displayData);
-                    // }
-                  });
-                  // layerAttractions.addTo(mymap);
-                  // mymap.fitBounds(layerAttractions.getBounds());
-
-                  var pieChart = new CanvasJS.Chart("pieChartContainer", {
-                    animationEnabled: true,
-                    theme: "light2",
-                    title: {
-                      text: "Caste"
-                    },
-                    data: [
-                      {
-                        type: "pie",
-                        showInLegend: true,
-                        //   toolTipContent: "{y} - #percent %",
-                        toolTipContent: "#percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                          {
-                            y: oc,
-                            indexLabel: "OC"
-                          },
-                          {
-                            y: bc,
-                            indexLabel: "BC"
-                          },
-                          {
-                            y: sc,
-                            indexLabel: "SC"
-                          }
-                        ]
-                      }
-                    ]
-                  });
-                  pieChart.render();
-                  var barChart = new CanvasJS.Chart("barChartContainer", {
-                    animationEnabled: true,
-                    theme: "light2", // "light1", "light2", "dark1", "dark2"
-                    title: {
-                      text: "Caste"
-                    },
-                    axisY: {
-                      title: "Caste Statistics"
-                    },
-                    data: [
-                      {
-                        type: "column",
-                        showInLegend: true,
-                        legendMarkerColor: "grey",
-                        legendText: "Types of Caste",
-                        dataPoints: [
-                          { y: oc, label: "OC" },
-                          { y: bc, label: "BC" },
-                          { y: sc, label: "SC" }
-                        ]
-                      }
-                    ]
-                  });
-                  barChart.render();
-                });
-
-                $("#btn1").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.education == $("#btn1").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn2").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.education == $("#btn2").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn3").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.education == $("#btn3").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn4").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.education == $("#btn4").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn5").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (
-                        feature.properties.education != $("#btn1").text() &&
-                        feature.properties.education != $("#btn2").text() &&
-                        feature.properties.education != $("#btn3").text() &&
-                        feature.properties.education != $("#btn4").text()
-                      ) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn6").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.area == $("#btn6").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn7").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.area == $("#btn7").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn8").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.caste == $("#btn8").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn9").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.caste == $("#btn9").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                $("#btn10").on("click", function() {
-                  if (layerAttractions) {
-                    layerAttractions.remove();
-                  }
-                  displayTableHeads();
-                  layerAttractions = L.geoJSON(response, {
-                    pointToLayer: function(feature, latlng) {
-                      if (feature.properties.caste == $("#btn10").text()) {
-                        return L.marker(latlng);
-                      }
-                    },
-                    onEachFeature: onEachFeature
-                  });
-                  addToMap();
-                });
-
-                data = response;
+              length = response.length;
+              buttonData = "";
+              buttonData += "<option disabled>Choose Map</option>";
+              for (var i = 0; i < length; i++) {
+                buttonData +=
+                  "<option id='optionData' value='" +
+                  response[i].table_name +
+                  "'>" +
+                  response[i].table_name +
+                  "</option>";
               }
-
-              $("#table_data").on("click", function() {
-                detailsbar.hide();
-                $("html,body").animate(
-                  {
-                    scrollTop: $("#table_data").offset().top
-                  },
-                  "slow"
-                );
-                var val = $("#table_data").val();
-                tableData = "";
-                displayTableHeads();
-                for (i = 0; i < response.features.length; i++) {
-                  if (response.features[i].properties.id == val) {
-                    props = response.features[i].properties;
-                    latlng = response.features[i].geometry.coordinates;
-                    displayTableRows(props, latlng);
-                    break;
-                  }
-                }
-                displayTableData();
-              });
+              $("#displayMaps")
+                .empty()
+                .append(buttonData);
             }
           });
+
+          $("#displayMaps").on("change", function() {
+            var table = $(this).val();
+            $.ajax({
+              type: "post",
+              url: "load_data.php",
+              data: {
+                table: $(this).val()
+              },
+              success: function(response) {
+                displayMarkers(response);
+              }
+            });
+          });
         }, 1000);
+
+        function displayMarkers(response) {
+          if (JSON.stringify(response) !== JSON.stringify(data)) {
+            var rjy = 0;
+            var ptp = 0;
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            // var redMarker = L.AwesomeMarkers.icon({
+            //   icon: "map-pin",
+            //   prefix: "fa",
+            //   markerColor: "transparent",
+            //   iconColor: "#3480eb"
+            // });
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.city == "Rajahmundry") {
+                  rjy += 1;
+                } else if (feature.properties.city == "Prathipadu") {
+                  ptp += 1;
+                }
+                return L.marker(latlng, {
+                  // bounceOnAdd: true
+                  // icon: redMarker
+                });
+              },
+              onEachFeature: function(feature, layerAttractions) {
+                layerAttractions.on("click", displayData);
+              }
+            });
+            layerAttractions.addTo(mymap);
+            mymap.fitBounds(layerAttractions.getBounds());
+            // markerLayer = L.markerClusterGroup();
+            // markerLayer.addLayer(layerAttractions).addTo(mymap);
+            // mymap.fitBounds(markerLayer.getBounds());
+
+            var pieChart = new CanvasJS.Chart("pieChartContainer", {
+              animationEnabled: true,
+              theme: "light2",
+              title: {
+                text: "Poverty Citites (Percentage)"
+              },
+              data: [
+                {
+                  type: "pie",
+                  showInLegend: true,
+                  //   toolTipContent: "{y} - #percent %",
+                  toolTipContent: "#percent %",
+                  legendText: "{indexLabel}",
+                  dataPoints: [
+                    {
+                      y: rjy,
+                      indexLabel: "Rajahmundry"
+                    },
+                    {
+                      y: ptp,
+                      indexLabel: "Prathipadu"
+                    }
+                  ]
+                }
+              ]
+            });
+            pieChart.render();
+            var barChart = new CanvasJS.Chart("barChartContainer", {
+              animationEnabled: true,
+              theme: "light2", // "light1", "light2", "dark1", "dark2"
+              title: {
+                text: "Poverty Cities (Number)"
+              },
+              axisY: {
+                title: "City Statistics"
+              },
+              data: [
+                {
+                  type: "column",
+                  showInLegend: true,
+                  legendMarkerColor: "grey",
+                  legendText: "Cities",
+                  dataPoints: [
+                    { y: rjy, label: "Rajahmundry" },
+                    { y: ptp, label: "Prathipadu" }
+                  ]
+                }
+              ]
+            });
+            barChart.render();
+
+            $("#education").on("click", function() {
+              var ssc = 0;
+              var inter = 0;
+              var graduation = 0;
+              var post = 0;
+              var others = 0;
+
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.education == "SSC") {
+                    ssc += 1;
+                  } else if (feature.properties.education == "Intermediate") {
+                    inter += 1;
+                  } else if (feature.properties.education == "Graduation") {
+                    graduation += 1;
+                  } else if (
+                    feature.properties.education == "Post Graduation"
+                  ) {
+                    post += 1;
+                  } else {
+                    others += 1;
+                  }
+                  // return L.marker(latlng);
+                }
+                // onEachFeature: function(feature, layerAttractions) {
+                //   layerAttractions.on("click", displayData);
+                // }
+              });
+              // layerAttractions.addTo(mymap);
+              // mymap.fitBounds(layerAttractions.getBounds());
+
+              var pieChart = new CanvasJS.Chart("pieChartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                  text: "Education Levels (Percentage)"
+                },
+                data: [
+                  {
+                    type: "pie",
+                    showInLegend: true,
+                    //   toolTipContent: "{y} - #percent %",
+                    toolTipContent: "#percent %",
+                    legendText: "{indexLabel}",
+                    dataPoints: [
+                      {
+                        y: ssc,
+                        indexLabel: "SSC"
+                      },
+                      {
+                        y: inter,
+                        indexLabel: "Intermediate"
+                      },
+                      {
+                        y: graduation,
+                        indexLabel: "Graduation"
+                      },
+                      {
+                        y: post,
+                        indexLabel: "Post Graduation"
+                      },
+                      {
+                        y: others,
+                        indexLabel: "Others"
+                      }
+                    ]
+                  }
+                ]
+              });
+              pieChart.render();
+              var barChart = new CanvasJS.Chart("barChartContainer", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
+                  text: "Education Levels"
+                },
+                axisY: {
+                  title: "Educational Statistics (Number)"
+                },
+                data: [
+                  {
+                    type: "column",
+                    showInLegend: true,
+                    legendMarkerColor: "grey",
+                    legendText: "Stages of Education",
+                    dataPoints: [
+                      { y: ssc, label: "SSC" },
+                      { y: inter, label: "Intermediate" },
+                      { y: graduation, label: "Graduation" },
+                      { y: post, label: "Post Graduation" },
+                      { y: others, label: "Others" }
+                    ]
+                  }
+                ]
+              });
+              barChart.render();
+            });
+
+            $("#area").on("click", function() {
+              var rural = 0;
+              var urban = 0;
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.area == "Rural") {
+                    rural += 1;
+                  } else if (feature.properties.area == "Urban") {
+                    urban += 1;
+                  }
+                  // return L.marker(latlng);
+                }
+                // onEachFeature: function(feature, layerAttractions) {
+                //   layerAttractions.on("click", displayData);
+                // }
+              });
+              // layerAttractions.addTo(mymap);
+              // mymap.fitBounds(layerAttractions.getBounds());
+
+              var pieChart = new CanvasJS.Chart("pieChartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                  text: "Types of Area (Percentage)"
+                },
+                data: [
+                  {
+                    type: "pie",
+                    showInLegend: true,
+                    //   toolTipContent: "{y} - #percent %",
+                    toolTipContent: "#percent %",
+                    legendText: "{indexLabel}",
+                    dataPoints: [
+                      {
+                        y: rural,
+                        indexLabel: "Rural"
+                      },
+                      {
+                        y: urban,
+                        indexLabel: "Urban"
+                      }
+                    ]
+                  }
+                ]
+              });
+              pieChart.render();
+              var barChart = new CanvasJS.Chart("barChartContainer", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
+                  text: "Types of Area (Number)"
+                },
+                axisY: {
+                  title: "Area Statistics"
+                },
+                data: [
+                  {
+                    type: "column",
+                    showInLegend: true,
+                    legendMarkerColor: "grey",
+                    legendText: "Area types",
+                    dataPoints: [
+                      { y: rural, label: "Rural" },
+                      { y: urban, label: "Urban" }
+                    ]
+                  }
+                ]
+              });
+              barChart.render();
+            });
+
+            $("#caste").on("click", function() {
+              var oc = 0;
+              var bc = 0;
+              var sc = 0;
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.caste == "OC") {
+                    oc += 1;
+                  } else if (feature.properties.caste == "BC") {
+                    bc += 1;
+                  } else if (feature.properties.caste == "SC") {
+                    sc += 1;
+                  }
+                  // return L.marker(latlng);
+                }
+                // onEachFeature: function(feature, layerAttractions) {
+                //   layerAttractions.on("click", displayData);
+                // }
+              });
+              // layerAttractions.addTo(mymap);
+              // mymap.fitBounds(layerAttractions.getBounds());
+
+              var pieChart = new CanvasJS.Chart("pieChartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                  text: "Caste"
+                },
+                data: [
+                  {
+                    type: "pie",
+                    showInLegend: true,
+                    //   toolTipContent: "{y} - #percent %",
+                    toolTipContent: "#percent %",
+                    legendText: "{indexLabel}",
+                    dataPoints: [
+                      {
+                        y: oc,
+                        indexLabel: "OC"
+                      },
+                      {
+                        y: bc,
+                        indexLabel: "BC"
+                      },
+                      {
+                        y: sc,
+                        indexLabel: "SC"
+                      }
+                    ]
+                  }
+                ]
+              });
+              pieChart.render();
+              var barChart = new CanvasJS.Chart("barChartContainer", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title: {
+                  text: "Caste"
+                },
+                axisY: {
+                  title: "Caste Statistics"
+                },
+                data: [
+                  {
+                    type: "column",
+                    showInLegend: true,
+                    legendMarkerColor: "grey",
+                    legendText: "Types of Caste",
+                    dataPoints: [
+                      { y: oc, label: "OC" },
+                      { y: bc, label: "BC" },
+                      { y: sc, label: "SC" }
+                    ]
+                  }
+                ]
+              });
+              barChart.render();
+            });
+
+            $("#btn1").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.education == $("#btn1").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn2").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.education == $("#btn2").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn3").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.education == $("#btn3").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn4").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.education == $("#btn4").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn5").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (
+                    feature.properties.education != $("#btn1").text() &&
+                    feature.properties.education != $("#btn2").text() &&
+                    feature.properties.education != $("#btn3").text() &&
+                    feature.properties.education != $("#btn4").text()
+                  ) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn6").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.area == $("#btn6").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn7").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.area == $("#btn7").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn8").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.caste == $("#btn8").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn9").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.caste == $("#btn9").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            $("#btn10").on("click", function() {
+              if (layerAttractions) {
+                layerAttractions.remove();
+              }
+              displayTableHeads();
+              layerAttractions = L.geoJSON(response, {
+                pointToLayer: function(feature, latlng) {
+                  if (feature.properties.caste == $("#btn10").text()) {
+                    return L.marker(latlng);
+                  }
+                },
+                onEachFeature: onEachFeature
+              });
+              addToMap();
+            });
+
+            data = response;
+          }
+
+          $("#details_panel").on("click", "#table_data", function() {
+            detailsbar.hide();
+            $("html,body").animate(
+              {
+                scrollTop: $("#table_data").offset().top
+              },
+              "slow"
+            );
+            var val = $("#table_data").val();
+            tableData = "";
+            displayTableHeads();
+            for (i = 0; i < response.features.length; i++) {
+              if (response.features[i].properties.id == val) {
+                props = response.features[i].properties;
+                latlng = response.features[i].geometry.coordinates;
+                displayTableRows(props, latlng);
+                break;
+              }
+            }
+            displayTableData();
+          });
+        }
 
         function onEachFeature(feature, layerAttractions) {
           props = feature.properties;
@@ -1257,6 +1267,45 @@
           layerAttractions.addTo(mymap);
           mymap.fitBounds(layerAttractions.getBounds());
           displayTableData();
+        }
+
+        function displayData(e) {
+          $("#details_panel")
+            .empty()
+            .append(
+              "<h3>Location Details</h3>" +
+                "<p class='data_class'>ID : " +
+                e.target.feature.properties.id +
+                "</p>" +
+                "<p class='data_class'>City : " +
+                e.target.feature.properties.city +
+                "</p>" +
+                "<p class='data_class'>Area : " +
+                e.target.feature.properties.area +
+                "</p>" +
+                "<p class='data_class'>Caste : " +
+                e.target.feature.properties.caste +
+                "</p>" +
+                "<p class='data_class'>Monthly Income : " +
+                e.target.feature.properties.monthly_income +
+                "</p>" +
+                "<p class='data_class'>Type of house : " +
+                e.target.feature.properties.type_of_building +
+                "</p>" +
+                "<p class='data_class'>Poverty Status : " +
+                e.target.feature.properties.poverty_status +
+                "</p>" +
+                "<p class='data_class'>Latitude : " +
+                e.latlng.lat +
+                "</p>" +
+                "<p class='data_class'>Longitude : " +
+                e.latlng.lng +
+                "</p>" +
+                "<button id='table_data' class='btn btn-warning' value='" +
+                e.target.feature.properties.id +
+                "'>More Details</button>"
+            );
+          detailsbar.show();
         }
 
         function displayTableHeads() {
@@ -1401,45 +1450,6 @@
           $("#table_panel")
             .empty()
             .append(tableData);
-        }
-
-        function displayData(e) {
-          $("#details_panel")
-            .empty()
-            .append(
-              "<h3>Location Details</h3>" +
-                "<p class='data_class'>ID : " +
-                e.target.feature.properties.id +
-                "</p>" +
-                "<p class='data_class'>City : " +
-                e.target.feature.properties.city +
-                "</p>" +
-                "<p class='data_class'>Area : " +
-                e.target.feature.properties.area +
-                "</p>" +
-                "<p class='data_class'>Caste : " +
-                e.target.feature.properties.caste +
-                "</p>" +
-                "<p class='data_class'>Monthly Income : " +
-                e.target.feature.properties.monthly_income +
-                "</p>" +
-                "<p class='data_class'>Type of house : " +
-                e.target.feature.properties.type_of_building +
-                "</p>" +
-                "<p class='data_class'>Poverty Status : " +
-                e.target.feature.properties.poverty_status +
-                "</p>" +
-                "<p class='data_class'>Latitude : " +
-                e.latlng.lat +
-                "</p>" +
-                "<p class='data_class'>Longitude : " +
-                e.latlng.lng +
-                "</p>" +
-                "<button id='table_data' class='btn btn-warning' value='" +
-                e.target.feature.properties.id +
-                "'>More Details</button>"
-            );
-          detailsbar.show();
         }
       });
     </script>
