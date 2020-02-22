@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Form</title>
     <link rel="stylesheet" href="src/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -35,32 +36,29 @@
           <li class="nav-item">
             <a class="nav-link" href="form.html">Form</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
-          </li>
           <!-- <li class="nav-item dropdown">
-            <a
+            <span
               class="nav-link dropdown-toggle"
-              href="#"
               id="navbarDropdown"
               role="button"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+              Categories
+            </span>
+            <div
+              id="dropdownTable"
+              class="dropdown-menu"
+              aria-labelledby="navbarDropdown"
+            ></div>
           </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+          </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <!-- Button trigger modal -->
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item">
             <button
               type="button"
               class="btn btn-primary"
@@ -69,8 +67,6 @@
             >
               Upload Files
             </button>
-
-            <!-- Modal -->
             <div
               class="modal fade"
               id="exampleModalLong"
@@ -99,7 +95,7 @@
                     <div class="alert alert-info">
                       <strong>Info!</strong> Upload only CSV files.
                     </div>
-                    <form>
+                    <form id="uploadFile">
                       <div class="form-group">
                         <label>Table Name :</label>
                         <input
@@ -127,7 +123,11 @@
                           >
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary">
+                      <button
+                        type="submit"
+                        id="uploadFile"
+                        class="btn btn-primary"
+                      >
                         Upload
                       </button>
                     </form>
@@ -605,77 +605,80 @@
       <div id="display"></div>
     </div>
     <script>
-      $(".custom-file-input").on("change", function() {
-        var fileName = $(this)
-          .val()
-          .split("\\")
-          .pop();
-        $(this)
-          .siblings(".custom-file-label")
-          .addClass("selected")
-          .html(fileName);
-      });
-
-      $("form").on("submit", function(e) {
-        e.preventDefault();
-        $.ajax({
-          type: "post",
-          url: "upload_file.php",
-          data: new FormData(this),
-          contentType: false,
-          cache: false,
-          processData: false,
-          success: function(response) {
-            // console.log(response);
-            $("#display")
-              .empty()
-              .addClass("alert alert-secondary")
-              .append(response)
-              .show();
-          }
+      $("document").ready(function() {
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this)
+            .val()
+            .split("\\")
+            .pop();
+          $(this)
+            .siblings(".custom-file-label")
+            .addClass("selected")
+            .html(fileName);
         });
-      });
 
-      $("#closeButton1,#closeButton2").on("click", function() {
-        $("#tableName").val("");
-        $("#chooseFile").text("Choose File");
-        $("#display").empty();
-      });
+        $("#uploadFile").on("submit", function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: "post",
+            url: "upload_file.php",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(response) {
+              $("#display")
+                .empty()
+                .addClass("alert alert-secondary")
+                .append(response)
+                .show();
+            }
+          });
+        });
 
-      $("form").on("submit", function(e) {
-        e.preventDefault();
-        $.ajax({
-          type: "post",
-          url: "store_data.php",
-          data: $("form").serialize(),
-          success: function() {
-            $("#display")
-              .addClass("alert alert-success")
-              .append("<strong>Success !</strong> Data successfully uploaded.")
-              .show();
-            $("html,body").animate(
-              {
-                scrollTop: $("#display").offset().top
-              },
-              "slow"
-            );
-            setTimeout(function() {
-              location.href = "index.html";
-              // history.pushState(null, null, "index.html");
-            }, 1500);
-          },
-          error: function() {
-            $("#display")
-              .addClass("alert alert-danger")
-              .append("<strong>Fail !</strong> Data upload failed.")
-              .show();
-            $("html,body").animate(
-              {
-                scrollTop: $("#display").offset().top
-              },
-              "slow"
-            );
-          }
+        $("#closeButton1,#closeButton2").on("click", function() {
+          $("#tableName").val("");
+          $("#chooseFile").text("Choose File");
+          $("#display").empty();
+        });
+
+        $("form").on("submit", function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: "post",
+            url: "store_data.php",
+            data: $("form").serialize(),
+            success: function() {
+              $("#display")
+                .addClass("alert alert-success")
+                .append(
+                  "<strong>Success !</strong> Data successfully uploaded."
+                )
+                .show();
+              $("html,body").animate(
+                {
+                  scrollTop: $("#display").offset().top
+                },
+                "slow"
+              );
+              setTimeout(function() {
+                location.href = "index.html";
+                // history.pushState(null, null, "index.html");
+              }, 1500);
+            },
+            error: function() {
+              $("#display")
+                .addClass("alert alert-danger")
+                .append("<strong>Fail !</strong> Data upload failed.")
+                .show();
+              $("html,body").animate(
+                {
+                  scrollTop: $("#display").offset().top
+                },
+                "slow"
+              );
+            }
+          });
         });
       });
     </script>

@@ -179,6 +179,7 @@
       </div>
     </nav>
 
+    <div id="main_panel" class="col-md-12"></div>
     <div id="side_panel">
       <h2 class="text-center">Categories</h2>
       <div class="container">
@@ -240,7 +241,6 @@
         </div>
       </div>
     </div>
-    <div id="main_panel" class="col-md-12"></div>
     <div id="details_panel"></div>
     <div class="row col-md-12">
       <div id="pieChartContainer" class="col-md-6 chart"></div>
@@ -1238,9 +1238,9 @@
             detailsbar.hide();
             $("html,body").animate(
               {
-                scrollTop: $("#table_data").offset().top
+                scrollTop: $(document).height()
               },
-              "slow"
+              1500
             );
             var val = $("#table_data").val();
             tableData = "";
