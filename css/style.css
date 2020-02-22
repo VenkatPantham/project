@@ -69,10 +69,6 @@ thead tr:nth-child(1) th {
   top: 0;
 }
 
-#tableMenu {
-  margin: 0px 10px;
-}
-
 #displayMaps {
   text-transform: capitalize;
 }
