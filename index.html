@@ -302,8 +302,8 @@
         // );
         // mymap.addLayer(backgroundLayer);
 
-        var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
-        // var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
+        // var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
         var lyrTopo = L.tileLayer.provider("OpenTopoMap");
         var lyrImagery = L.tileLayer.provider("Esri.WorldImagery");
         // var lyrWaterColor = L.tileLayer.provider("Stamen.Watercolor");
@@ -697,7 +697,7 @@
               if (JSON.stringify(response) !== JSON.stringify(tables)) {
                 length = response.length;
                 buttonData = "";
-                buttonData += "<option disabled>Choose Map</option>";
+                buttonData += "<option selected disabled>Choose Map</option>";
                 for (var i = 0; i < length; i++) {
                   buttonData +=
                     "<option id='optionData' value='" +
