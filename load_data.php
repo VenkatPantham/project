@@ -1,7 +1,7 @@
 <?php
 
 # Connect to PostgreSQL database
-$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=trial;", "postgres", "postgresql");
+$conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=leaflet;", "postgres", "postgresql");
 
 # Checking Connection
 if (!$conn) {
