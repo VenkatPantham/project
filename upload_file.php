@@ -32,6 +32,7 @@ if ($uploadOk == 0) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $tableName = $_POST['tableName'];
         $tableRows = 0;
+        $directory=getcwd();
 
         $file = fopen($target_file, "r");
         if ($file) {
@@ -42,8 +43,7 @@ if ($uploadOk == 0) {
         fclose($file);
 
         # However the User's Query will be passed to the DB:
-        // $sql = "SELECT load_csv_file('$tableName','/home/venkat-pantham/Desktop/Project/gis/$target_file',$tableRows)";
-        $sql = "SELECT load_csv_file('$tableName','/home/ubuntu/project/$target_file',$tableRows)";
+        $sql = "SELECT load_csv_file('$tableName','$directory/$target_file',$tableRows)";
 
         # Try query or error
         $db = $conn->query($sql);
