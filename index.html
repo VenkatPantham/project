@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project</title>
+    <link rel="stylesheet" href="src/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="src/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="src/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="src/plugins/L.Control.Sidebar.css" />
+    <link rel="stylesheet" href="src/plugins/easy-button.css" />
+    <link rel="stylesheet" href="src/plugins/Leaflet.PolylineMeasure.css" />
+    <link rel="stylesheet" href="src/plugins/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="src/plugins/leaflet.magnifyingglass.css" />
+    <link rel="stylesheet" href="src/plugins/MarkerCluster.css" />
+    <link rel="stylesheet" href="src/plugins/MarkerCluster.Default.css" />
+    <script src="src/jquery.min.js"></script>
+    <script src="src/js/bootstrap.bundle.min.js"></script>
+    <script src="src/leaflet.js"></script>
+    <script src="src/leaflet.ajax.min.js"></script>
+    <script src="src/canvas.js"></script>
+    <script src="src/plugins/L.Control.Sidebar.js"></script>
+    <script src="src/plugins/leaflet.spin.min.js"></script>
+    <script src="src/plugins/spin.min.js"></script>
+    <script src="src/plugins/easy-button.js"></script>
+    <!-- <script src="src/plugins/bouncemarker.js"></script> -->
+    <script src="src/plugins/Leaflet.PolylineMeasure.js"></script>
+    <script src="src/plugins/leaflet.awesome-markers.min.js"></script>
+    <script src="src/plugins/leaflet-providers.js"></script>
+    <script src="src/plugins/leaflet.magnifyingglass.js"></script>
+    <script src="src/plugins/leaflet.markercluster.js"></script>
+  </head>
+
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light shadow p-2 mb-3 bg-white rounded"
+    >
+      <a class="navbar-brand" href="index.html">Poverty</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <!-- <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="form.html">Form</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <span
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Categories
+            </span>
+            <div
+              id="dropdownTable"
+              class="dropdown-menu"
+              aria-labelledby="navbarDropdown"
+            ></div>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+          </li>
+          <li id="tableMenu" class="nav-item">
+            <form class="form-inline">
+              <select id="displayMaps" class="form-control"> </select>
+            </form>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+          <li id="fileUpload">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+            >
+              Upload Files
+            </button>
+            <div
+              class="modal fade"
+              id="exampleModalLong"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLongTitle"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                      Upload your Files !!!
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      id="closeButton1"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="alert alert-info">
+                      <strong>Info!</strong> Upload only CSV files.
+                    </div>
+                    <form id="uploadFile">
+                      <div class="form-group">
+                        <label>Table Name :</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="tableName"
+                          name="tableName"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Custom File :</label>
+                        <div class="custom-file">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            id="fileToUpload"
+                            name="fileToUpload"
+                          />
+                          <label
+                            id="chooseFile"
+                            class="custom-file-label"
+                            for="customFile"
+                            >Choose file</label
+                          >
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        id="uploadFile"
+                        class="btn btn-primary"
+                      >
+                        Upload
+                      </button>
+                    </form>
+                    <div id="display"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="closeButton2"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="main_panel" class="col-md-12"></div>
+    <div id="side_panel">
+      <h2 class="text-center">Categories</h2>
+      <div class="container">
+        <div class="btn-block btn-group">
+          <button type="button" id="education" class="btn btn-primary">
+            Education
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" id="btn1">SSC</li>
+            <li class="dropdown-item" id="btn2">Intermediate</li>
+            <li class="dropdown-item" id="btn3">Graduation</li>
+            <li class="dropdown-item" id="btn4">Post Graduation</li>
+            <li class="dropdown-item" id="btn5">Others</li>
+          </ul>
+        </div>
+        <div class="btn-block btn-group">
+          <button type="button" id="area" class="btn btn-primary">Area</button>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" id="btn6">Rural</li>
+            <li class="dropdown-item" id="btn7">Urban</li>
+          </ul>
+        </div>
+        <div class="btn-block btn-group">
+          <button type="button" id="caste" class="btn btn-primary">
+            Caste
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" id="btn8">OC</li>
+            <li class="dropdown-item" id="btn9">BC</li>
+            <li class="dropdown-item" id="btn10">SC</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="details_panel"></div>
+    <div class="row col-md-12">
+      <div id="pieChartContainer" class="col-md-6 chart"></div>
+      <div id="barChartContainer" class="col-md-6 chart"></div>
+    </div>
+    <div id="table_panel" class="col-md-12"></div>
+
+    <script>
+      $("document").ready(function() {
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this)
+            .val()
+            .split("\\")
+            .pop();
+          $(this)
+            .siblings(".custom-file-label")
+            .addClass("selected")
+            .html(fileName);
+        });
+
+        $("#uploadFile").on("submit", function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: "post",
+            url: "upload_file.php",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(response) {
+              $("#display")
+                .empty()
+                .addClass("alert alert-secondary")
+                .append(response)
+                .show();
+            }
+          });
+        });
+
+        $("#closeButton1,#closeButton2").on("click", function() {
+          $("#tableName").val("");
+          $("#chooseFile").text("Choose File");
+          $("#display").empty();
+        });
+
+        var buttonData = "";
+        var mymap = L.map("main_panel", {
+          center: [17.0314102, 81.8559891],
+          zoom: 11,
+          zoomControl: false,
+          attributionControl: false
+        });
+
+        mymap.spin(true);
+
+        // var backgroundLayer = L.tileLayer(
+        //   // "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+        //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        // );
+        // mymap.addLayer(backgroundLayer);
+
+        var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        // var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
+        var lyrTopo = L.tileLayer.provider("OpenTopoMap");
+        var lyrImagery = L.tileLayer.provider("Esri.WorldImagery");
+        // var lyrWaterColor = L.tileLayer.provider("Stamen.Watercolor");
+        mymap.addLayer(lyrOSM);
+
+        lyrOSM.on("loading", function() {
+          mymap.spin(true);
+        });
+        lyrOSM.on("load", function() {
+          mymap.spin(false);
+        });
+
+        mymap.on("baselayerchange", function(e) {
+          mymap.spin(true);
+          e.layer.on("loading", function() {
+            mymap.spin(true);
+          });
+          e.layer.on("load", function() {
+            mymap.spin(false);
+          });
+        });
+
+        var basemaps = {
+          "Open Street": lyrOSM,
+          Topo: lyrTopo,
+          Imagery: lyrImagery
+          // Watercolor: lyrWaterColor
+        };
+
+        var layerAttractions;
+        var tables;
+        var data;
+        var props;
+        var latlng;
+        var tableData = "";
+        var buttonData = "";
+        var marker;
+        var markerLayer;
+        var wardLayer;
+        var slumLayer;
+        var policeLayer;
+        var officeLayer;
+        var shopLayer;
+        var anganwadiLayer;
+        var bankLayer;
+        var hospitalLayer;
+        var medicalLayer;
+        var hotelLayer;
+        var schoolLayer;
+        var parkLayer;
+        var waterLayer;
+        var petrolLayer;
+
+        wardLayer = L.geoJSON.ajax("load_wards.php", {
+          // style: {
+          // fillColor: "blue",
+          // weight: 2,
+          // opacity: 1,
+          // color: "black", //Outline color
+          // fillOpacity: 0.7,
+          // },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup("Ward No : " + feature.properties.ward_no);
+          }
+        });
+
+        slumLayer = L.geoJSON.ajax("load_slums.php", {
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup("Area Name : " + feature.properties.name);
+          }
+        });
+
+        policeLayer = L.geoJSON.ajax("load_police.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "siren-on",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        officeLayer = L.geoJSON.ajax("load_offices.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "building",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        shopLayer = L.geoJSON.ajax("load_shops.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "shopping-bag",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          }
+        });
+
+        anganwadiLayer = L.geoJSON.ajax("load_anganwadi.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "child",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          }
+        });
+
+        bankLayer = L.geoJSON.ajax("load_banks.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "university",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        hospitalLayer = L.geoJSON.ajax("load_hospitals.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "clinic-medical",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        medicalLayer = L.geoJSON.ajax("load_medicals.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "briefcase-medical",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        hotelLayer = L.geoJSON.ajax("load_hotels.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "hotel",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        schoolLayer = L.geoJSON.ajax("load_schools.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "school",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        parkLayer = L.geoJSON.ajax("load_parks.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "tree-alt",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        waterLayer = L.geoJSON.ajax("load_water.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "tint",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        petrolLayer = L.geoJSON.ajax("load_petrolbunks.php", {
+          pointToLayer: function(response, latlng) {
+            marker = L.AwesomeMarkers.icon({
+              icon: "gas-pump",
+              prefix: "fa",
+              markerColor: "red",
+              iconColor: "white"
+            });
+            return L.marker(latlng, {
+              //bounceOnAdd: true,
+              icon: marker
+            });
+          },
+          onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          }
+        });
+
+        var overlays = {
+          Wards: wardLayer,
+          Slums: slumLayer,
+          "Police Stations": policeLayer,
+          "Government Offices": officeLayer,
+          "Ration Shops": shopLayer,
+          "Anganwadi Kendrams": anganwadiLayer,
+          Banks: bankLayer,
+          Hospitals: hospitalLayer,
+          "Medical Shops": medicalLayer,
+          "Hotels and Restaurants": hotelLayer,
+          "Schools and Colleges": schoolLayer,
+          Parks: parkLayer,
+          "Water Tanks": waterLayer,
+          "Petrol Pumps": petrolLayer
+          // "Drawn Items": items
+        };
+
+        var ctlLayers = L.control.layers(basemaps, overlays).addTo(mymap);
+
+        var sidebar = L.control.sidebar("side_panel", {
+          position: "left",
+          closeButton: false,
+          autoPan: false
+        });
+        mymap.addControl(sidebar);
+
+        var ctlSidebar = L.easyButton({
+          states: [
+            {
+              stateName: "open-menu",
+              icon: "fa fa-bars",
+              title: "Open Menu",
+              onClick: function() {
+                sidebar.show();
+                this.state("close-menu");
+              }
+            },
+            {
+              stateName: "close-menu",
+              icon: "fa fa-bars",
+              title: "Close Menu",
+              onClick: function() {
+                sidebar.hide();
+                this.state("open-menu");
+              }
+            }
+          ]
+        });
+        ctlSidebar.addTo(mymap);
+
+        var detailsbar = L.control.sidebar("details_panel", {
+          position: "right",
+          // closeButton: false,
+          autoPan: false
+        });
+        mymap.addControl(detailsbar);
+
+        L.control
+          .polylineMeasure({
+            position: "topleft",
+            unit: "metres"
+          })
+          .addTo(mymap);
+
+        var ctlMagnifier;
+        var ctlMagnifyingGlass;
+        var ctlMagnifiedTiles = L.tileLayer.provider("OpenStreetMap.Mapnik");
+
+        ctlMagnifier = L.easyButton({
+          states: [
+            {
+              stateName: "magnifier-off",
+              icon: "fa-search",
+              title: "Turn on Magnifier",
+              onClick: function() {
+                ctlMagnifyingGlass = L.magnifyingGlass({
+                  layers: [ctlMagnifiedTiles]
+                });
+                mymap.addLayer(ctlMagnifyingGlass);
+                this.state("magnifier-on");
+              }
+            },
+            {
+              stateName: "magnifier-on",
+              icon: "fa-search-minus",
+              title: "Turn off Magnifier",
+              onClick: function() {
+                mymap.removeLayer(ctlMagnifyingGlass);
+                this.state("magnifier-off");
+              }
+            }
+          ]
+        }).addTo(mymap);
+
+        $.ajax({
+          url: "load_data.php",
+          dataType: "json",
+          success: function(response) {
+            displayMarkers(response);
+          }
+        });
+
+        setInterval(function() {
+          $.ajax({
+            url: "load_tables.php",
+            dataType: "json",
+            success: function(response) {
+              if (JSON.stringify(response) !== JSON.stringify(tables)) {
+                length = response.length;
+                buttonData = "";
+                buttonData += "<option disabled>Choose Map</option>";
+                for (var i = 0; i < length; i++) {
+                  if (response[i].table_name == "project") {
+                    buttonData +=
+                      "<option id='optionData' value='" +
+                      response[i].table_name +
+                      "' selected>" +
+                      response[i].table_name +
+                      "</option>";
+                  } else {
+                    buttonData +=
+                      "<option id='optionData' value='" +
+                      response[i].table_name +
+                      "'>" +
+                      response[i].table_name +
+                      "</option>";
+                  }
+                }
+                $("#displayMaps")
+                  .empty()
+                  .append(buttonData);
+                tables = response;
+              }
+            }
+          });
+
+          $("#displayMaps").on("change", function() {
+            var table = $(this).val();
+            $.ajax({
+              type: "post",
+              url: "load_data.php",
+              data: {
+                table: $(this).val()
+              },
+              success: function(response) {
+                if (JSON.stringify(response) !== JSON.stringify(data)) {
+                  displayMarkers(response);
+                  data = response;
+                }
+              }
+            });
+          });
+        }, 1000);
+
+        function displayMarkers(response) {
+          var rjy = 0;
+          var ptp = 0;
+          if (layerAttractions) {
+            layerAttractions.remove();
+          }
+          // var redMarker = L.AwesomeMarkers.icon({
+          //   icon: "map-pin",
+          //   prefix: "fa",
+          //   markerColor: "transparent",
+          //   iconColor: "#3480eb"
+          // });
+          layerAttractions = L.geoJSON(response, {
+            pointToLayer: function(feature, latlng) {
+              if (feature.properties.city == "Rajahmundry") {
+                rjy += 1;
+              } else if (feature.properties.city == "Prathipadu") {
+                ptp += 1;
+              }
+              return L.marker(latlng, {
+                // bounceOnAdd: true
+                // icon: redMarker
+              });
+            },
+            onEachFeature: function(feature, layerAttractions) {
+              layerAttractions.on("click", displayData);
+            }
+          });
+          layerAttractions.addTo(mymap);
+          mymap.fitBounds(layerAttractions.getBounds());
+          // markerLayer = L.markerClusterGroup();
+          // markerLayer.addLayer(layerAttractions).addTo(mymap);
+          // mymap.fitBounds(markerLayer.getBounds());
+
+          var pieChart = new CanvasJS.Chart("pieChartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+              text: "Poverty Citites (Percentage)"
+            },
+            data: [
+              {
+                type: "pie",
+                showInLegend: true,
+                //   toolTipContent: "{y} - #percent %",
+                toolTipContent: "#percent %",
+                legendText: "{indexLabel}",
+                dataPoints: [
+                  {
+                    y: rjy,
+                    indexLabel: "Rajahmundry"
+                  },
+                  {
+                    y: ptp,
+                    indexLabel: "Prathipadu"
+                  }
+                ]
+              }
+            ]
+          });
+          pieChart.render();
+          var barChart = new CanvasJS.Chart("barChartContainer", {
+            animationEnabled: true,
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            title: {
+              text: "Poverty Cities (Number)"
+            },
+            axisY: {
+              title: "City Statistics"
+            },
+            data: [
+              {
+                type: "column",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "Cities",
+                dataPoints: [
+                  { y: rjy, label: "Rajahmundry" },
+                  { y: ptp, label: "Prathipadu" }
+                ]
+              }
+            ]
+          });
+          barChart.render();
+
+          $("#education").on("click", function() {
+            var ssc = 0;
+            var inter = 0;
+            var graduation = 0;
+            var post = 0;
+            var others = 0;
+
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.education == "SSC") {
+                  ssc += 1;
+                } else if (feature.properties.education == "Intermediate") {
+                  inter += 1;
+                } else if (feature.properties.education == "Graduation") {
+                  graduation += 1;
+                } else if (feature.properties.education == "Post Graduation") {
+                  post += 1;
+                } else {
+                  others += 1;
+                }
+                // return L.marker(latlng);
+              }
+              // onEachFeature: function(feature, layerAttractions) {
+              //   layerAttractions.on("click", displayData);
+              // }
+            });
+            // layerAttractions.addTo(mymap);
+            // mymap.fitBounds(layerAttractions.getBounds());
+
+            var pieChart = new CanvasJS.Chart("pieChartContainer", {
+              animationEnabled: true,
+              theme: "light2",
+              title: {
+                text: "Education Levels (Percentage)"
+              },
+              data: [
+                {
+                  type: "pie",
+                  showInLegend: true,
+                  //   toolTipContent: "{y} - #percent %",
+                  toolTipContent: "#percent %",
+                  legendText: "{indexLabel}",
+                  dataPoints: [
+                    {
+                      y: ssc,
+                      indexLabel: "SSC"
+                    },
+                    {
+                      y: inter,
+                      indexLabel: "Intermediate"
+                    },
+                    {
+                      y: graduation,
+                      indexLabel: "Graduation"
+                    },
+                    {
+                      y: post,
+                      indexLabel: "Post Graduation"
+                    },
+                    {
+                      y: others,
+                      indexLabel: "Others"
+                    }
+                  ]
+                }
+              ]
+            });
+            pieChart.render();
+            var barChart = new CanvasJS.Chart("barChartContainer", {
+              animationEnabled: true,
+              theme: "light2", // "light1", "light2", "dark1", "dark2"
+              title: {
+                text: "Education Levels"
+              },
+              axisY: {
+                title: "Educational Statistics (Number)"
+              },
+              data: [
+                {
+                  type: "column",
+                  showInLegend: true,
+                  legendMarkerColor: "grey",
+                  legendText: "Stages of Education",
+                  dataPoints: [
+                    { y: ssc, label: "SSC" },
+                    { y: inter, label: "Intermediate" },
+                    { y: graduation, label: "Graduation" },
+                    { y: post, label: "Post Graduation" },
+                    { y: others, label: "Others" }
+                  ]
+                }
+              ]
+            });
+            barChart.render();
+          });
+
+          $("#area").on("click", function() {
+            var rural = 0;
+            var urban = 0;
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.area == "Rural") {
+                  rural += 1;
+                } else if (feature.properties.area == "Urban") {
+                  urban += 1;
+                }
+                // return L.marker(latlng);
+              }
+              // onEachFeature: function(feature, layerAttractions) {
+              //   layerAttractions.on("click", displayData);
+              // }
+            });
+            // layerAttractions.addTo(mymap);
+            // mymap.fitBounds(layerAttractions.getBounds());
+
+            var pieChart = new CanvasJS.Chart("pieChartContainer", {
+              animationEnabled: true,
+              theme: "light2",
+              title: {
+                text: "Types of Area (Percentage)"
+              },
+              data: [
+                {
+                  type: "pie",
+                  showInLegend: true,
+                  //   toolTipContent: "{y} - #percent %",
+                  toolTipContent: "#percent %",
+                  legendText: "{indexLabel}",
+                  dataPoints: [
+                    {
+                      y: rural,
+                      indexLabel: "Rural"
+                    },
+                    {
+                      y: urban,
+                      indexLabel: "Urban"
+                    }
+                  ]
+                }
+              ]
+            });
+            pieChart.render();
+            var barChart = new CanvasJS.Chart("barChartContainer", {
+              animationEnabled: true,
+              theme: "light2", // "light1", "light2", "dark1", "dark2"
+              title: {
+                text: "Types of Area (Number)"
+              },
+              axisY: {
+                title: "Area Statistics"
+              },
+              data: [
+                {
+                  type: "column",
+                  showInLegend: true,
+                  legendMarkerColor: "grey",
+                  legendText: "Area types",
+                  dataPoints: [
+                    { y: rural, label: "Rural" },
+                    { y: urban, label: "Urban" }
+                  ]
+                }
+              ]
+            });
+            barChart.render();
+          });
+
+          $("#caste").on("click", function() {
+            var oc = 0;
+            var bc = 0;
+            var sc = 0;
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.caste == "OC") {
+                  oc += 1;
+                } else if (feature.properties.caste == "BC") {
+                  bc += 1;
+                } else if (feature.properties.caste == "SC") {
+                  sc += 1;
+                }
+                // return L.marker(latlng);
+              }
+              // onEachFeature: function(feature, layerAttractions) {
+              //   layerAttractions.on("click", displayData);
+              // }
+            });
+            // layerAttractions.addTo(mymap);
+            // mymap.fitBounds(layerAttractions.getBounds());
+
+            var pieChart = new CanvasJS.Chart("pieChartContainer", {
+              animationEnabled: true,
+              theme: "light2",
+              title: {
+                text: "Caste"
+              },
+              data: [
+                {
+                  type: "pie",
+                  showInLegend: true,
+                  //   toolTipContent: "{y} - #percent %",
+                  toolTipContent: "#percent %",
+                  legendText: "{indexLabel}",
+                  dataPoints: [
+                    {
+                      y: oc,
+                      indexLabel: "OC"
+                    },
+                    {
+                      y: bc,
+                      indexLabel: "BC"
+                    },
+                    {
+                      y: sc,
+                      indexLabel: "SC"
+                    }
+                  ]
+                }
+              ]
+            });
+            pieChart.render();
+            var barChart = new CanvasJS.Chart("barChartContainer", {
+              animationEnabled: true,
+              theme: "light2", // "light1", "light2", "dark1", "dark2"
+              title: {
+                text: "Caste"
+              },
+              axisY: {
+                title: "Caste Statistics"
+              },
+              data: [
+                {
+                  type: "column",
+                  showInLegend: true,
+                  legendMarkerColor: "grey",
+                  legendText: "Types of Caste",
+                  dataPoints: [
+                    { y: oc, label: "OC" },
+                    { y: bc, label: "BC" },
+                    { y: sc, label: "SC" }
+                  ]
+                }
+              ]
+            });
+            barChart.render();
+          });
+
+          $("#btn1").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.education == $("#btn1").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn2").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.education == $("#btn2").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn3").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.education == $("#btn3").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn4").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.education == $("#btn4").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn5").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (
+                  feature.properties.education != $("#btn1").text() &&
+                  feature.properties.education != $("#btn2").text() &&
+                  feature.properties.education != $("#btn3").text() &&
+                  feature.properties.education != $("#btn4").text()
+                ) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn6").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.area == $("#btn6").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn7").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.area == $("#btn7").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn8").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.caste == $("#btn8").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn9").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.caste == $("#btn9").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#btn10").on("click", function() {
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
+            displayTableHeads();
+            layerAttractions = L.geoJSON(response, {
+              pointToLayer: function(feature, latlng) {
+                if (feature.properties.caste == $("#btn10").text()) {
+                  return L.marker(latlng);
+                }
+              },
+              onEachFeature: onEachFeature
+            });
+            addToMap();
+          });
+
+          $("#details_panel").on("click", "#table_data", function() {
+            detailsbar.hide();
+            $("html,body").animate(
+              {
+                scrollTop: $(document).height()
+              },
+              1500
+            );
+            var val = $("#table_data").val();
+            tableData = "";
+            displayTableHeads();
+            for (i = 0; i < response.features.length; i++) {
+              if (response.features[i].properties.id == val) {
+                props = response.features[i].properties;
+                latlng = response.features[i].geometry.coordinates;
+                displayTableRows(props, latlng);
+                break;
+              }
+            }
+            displayTableData();
+          });
+        }
+
+        function onEachFeature(feature, layerAttractions) {
+          props = feature.properties;
+          latlng = feature.geometry.coordinates;
+          displayTableRows(props, latlng);
+          layerAttractions.on("click", displayData);
+        }
+
+        function addToMap() {
+          sidebar.hide();
+          layerAttractions.addTo(mymap);
+          mymap.fitBounds(layerAttractions.getBounds());
+          displayTableData();
+        }
+
+        function displayData(e) {
+          $("#details_panel")
+            .empty()
+            .append(
+              "<h3>Location Details</h3>" +
+                "<p class='data_class'>ID : " +
+                e.target.feature.properties.id +
+                "</p>" +
+                "<p class='data_class'>City : " +
+                e.target.feature.properties.city +
+                "</p>" +
+                "<p class='data_class'>Area : " +
+                e.target.feature.properties.area +
+                "</p>" +
+                "<p class='data_class'>Caste : " +
+                e.target.feature.properties.caste +
+                "</p>" +
+                "<p class='data_class'>Monthly Income : " +
+                e.target.feature.properties.monthly_income +
+                "</p>" +
+                "<p class='data_class'>Type of house : " +
+                e.target.feature.properties.type_of_building +
+                "</p>" +
+                "<p class='data_class'>Poverty Status : " +
+                e.target.feature.properties.poverty_status +
+                "</p>" +
+                "<p class='data_class'>Latitude : " +
+                e.latlng.lat +
+                "</p>" +
+                "<p class='data_class'>Longitude : " +
+                e.latlng.lng +
+                "</p>" +
+                "<button id='table_data' class='btn btn-warning' value='" +
+                e.target.feature.properties.id +
+                "'>More Details</button>"
+            );
+          detailsbar.show();
+        }
+
+        function displayTableHeads() {
+          tableData = "";
+          tableData +=
+            "<table class='table table-responsive table-hover table-bordered'>";
+          tableData += "<thead class='thead-light'>";
+          tableData += "<tr>";
+          tableData += "<th>ID</th>";
+          tableData += "<th>City</th>";
+          tableData += "<th>Area</th>";
+          tableData += "<th>Family Size</th>";
+          tableData += "<th>No of Children</th>";
+          tableData += "<th>Males</th>";
+          tableData += "<th>Females</th>";
+          tableData += "<th>No of working members</th>";
+          tableData += "<th>Children working below 15</th>";
+          tableData += "<th>Age <= 15</th>";
+          tableData += "<th>Age 15 <= 25</th>";
+          tableData += "<th>Age 25 <= 45</th>";
+          tableData += "<th>Age > 45</th>";
+          tableData += "<th>Education</th>";
+          tableData += "<th>Occupation</th>";
+          tableData += "<th>Type of Ration card</th>";
+          tableData += "<th>Health card</th>";
+          tableData += "<th>No of deceased people</th>";
+          tableData += "<th>No of handicapped people</th>";
+          tableData += "<th>Bikes</th>";
+          tableData += "<th>Cars</th>";
+          tableData += "<th>Tractors</th>";
+          tableData += "<th>House</th>";
+          tableData += "<th>Land</th>";
+          tableData += "<th>Gold</th>";
+          tableData += "<th>Fans</th>";
+          tableData += "<th>Televisions</th>";
+          tableData += "<th>Refrigerators</th>";
+          tableData += "<th>Heaters</th>";
+          tableData += "<th>Air conditioners</th>";
+          tableData += "<th>Computers</th>";
+          tableData += "<th>Monthly Income</th>";
+          tableData += "<th>Government Income</th>";
+          tableData += "<th>Private Income</th>";
+          tableData += "<th>Pension Income</th>";
+          tableData += "<th>Bank savings</th>";
+          tableData += "<th>Postal savings</th>";
+          tableData += "<th>Chit savings</th>";
+          tableData += "<th>Other savings</th>";
+          tableData += "<th>Caste</th>";
+          tableData += "<th>Nearest Hospital(kms)</th>";
+          tableData += "<th>Nearest Primary school(kms)</th>";
+          tableData += "<th>Nearest High school(kms)</th>";
+          tableData += "<th>Nearest College(kms)</th>";
+          tableData += "<th>Nearest University(kms)</th>";
+          tableData += "<th>Poverty status</th>";
+          tableData += "<th>Income status</th>";
+          tableData += "<th>Agricultural status</th>";
+          tableData += "<th>Type of building</th>";
+          tableData += "<th>Type of water source</th>";
+          tableData += "<th>Source of drinking water</th>";
+          tableData += "<th>Presence of toilet facility</th>";
+          tableData += "<th>Electricity connection</th>";
+          tableData += "<th>Gas connection</th>";
+          tableData += "<th>Cable connection</th>";
+          tableData += "<th>Internet connection</th>";
+          tableData += "<th>Electricity Bill</th>";
+          tableData += "<th>No of LIC policies</th>";
+          tableData += "<th>Latitude</th>";
+          tableData += "<th>Longitude</th>";
+          tableData += "</tr>";
+          tableData += "</thead>";
+          tableData += "<tbody style='overflow:scroll'>";
+        }
+
+        function displayTableRows(props, latlng) {
+          tableData += "<tr>";
+          tableData += "<td>" + props.id + "</td>";
+          tableData += "<td>" + props.city + "</td>";
+          tableData += "<td>" + props.area + "</td>";
+          tableData += "<td>" + props.family_size + "</td>";
+          tableData += "<td>" + props.no_of_children + "</td>";
+          tableData += "<td>" + props.male + "</td>";
+          tableData += "<td>" + props.female + "</td>";
+          tableData += "<td>" + props.no_of_working_members + "</td>";
+          tableData += "<td>" + props.child_working_below_15 + "</td>";
+          tableData += "<td>" + props.age_lt15 + "</td>";
+          tableData += "<td>" + props.age_15btw25 + "</td>";
+          tableData += "<td>" + props.age_25btw45 + "</td>";
+          tableData += "<td>" + props.age_gt45 + "</td>";
+          tableData += "<td>" + props.education + "</td>";
+          tableData += "<td>" + props.occupation + "</td>";
+          tableData += "<td>" + props.type_of_ration_card + "</td>";
+          tableData += "<td>" + props.health_card + "</td>";
+          tableData += "<td>" + props.no_of_deceased_people + "</td>";
+          tableData += "<td>" + props.no_of_handicapped_people + "</td>";
+          tableData += "<td>" + props.bike + "</td>";
+          tableData += "<td>" + props.car + "</td>";
+          tableData += "<td>" + props.tractor + "</td>";
+          tableData += "<td>" + props.house + "</td>";
+          tableData += "<td>" + props.land + "</td>";
+          tableData += "<td>" + props.gold + "</td>";
+          tableData += "<td>" + props.fan + "</td>";
+          tableData += "<td>" + props.television + "</td>";
+          tableData += "<td>" + props.refrigerator + "</td>";
+          tableData += "<td>" + props.heater + "</td>";
+          tableData += "<td>" + props.air_conditioner + "</td>";
+          tableData += "<td>" + props.computer + "</td>";
+          tableData += "<td>" + props.monthly_income + "</td>";
+          tableData += "<td>" + props.government_income + "</td>";
+          tableData += "<td>" + props.private_income + "</td>";
+          tableData += "<td>" + props.pension_income + "</td>";
+          tableData += "<td>" + props.bank_savings + "</td>";
+          tableData += "<td>" + props.postal_savings + "</td>";
+          tableData += "<td>" + props.chit_savings + "</td>";
+          tableData += "<td>" + props.other_savings + "</td>";
+          tableData += "<td>" + props.caste + "</td>";
+          tableData += "<td>" + props.nearest_hospital + "</td>";
+          tableData += "<td>" + props.nearest_primary_school + "</td>";
+          tableData += "<td>" + props.nearest_high_school + "</td>";
+          tableData += "<td>" + props.nearest_college + "</td>";
+          tableData += "<td>" + props.nearest_university + "</td>";
+          tableData += "<td>" + props.poverty_status + "</td>";
+          tableData += "<td>" + props.income_status + "</td>";
+          tableData += "<td>" + props.agricultural_status + "</td>";
+          tableData += "<td>" + props.type_of_building + "</td>";
+          tableData += "<td>" + props.type_of_water_source + "</td>";
+          tableData += "<td>" + props.source_of_drinking_water + "</td>";
+          tableData += "<td>" + props.presence_of_toilet_facility + "</td>";
+          tableData += "<td>" + props.electricity_connection + "</td>";
+          tableData += "<td>" + props.gas_connection + "</td>";
+          tableData += "<td>" + props.cable_connection + "</td>";
+          tableData += "<td>" + props.internet_connection + "</td>";
+          tableData += "<td>" + props.electricity_bill + "</td>";
+          tableData += "<td>" + props.no_of_lic_policies + "</td>";
+          tableData += "<td>" + latlng[1] + "</td>";
+          tableData += "<td>" + latlng[0] + "</td>";
+          tableData += "</tr>";
+        }
+
+        function displayTableData() {
+          tableData += "</tbody";
+          tableData += "</table>";
+          $("#table_panel")
+            .empty()
+            .append(tableData);
+        }
+      });
+    </script>
+  </body>
+</html>
