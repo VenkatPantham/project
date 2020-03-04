@@ -159,7 +159,9 @@
                         Upload
                       </button>
                     </form>
-                    <div id="display"></div>
+                    <div id="displayInfo">
+                      <div id="display"></div>
+                    </div>
                   </div>
                   <div class="modal-footer">
                     <button
@@ -283,7 +285,7 @@
         $("#closeButton1,#closeButton2").on("click", function() {
           $("#tableName").val("");
           $("#chooseFile").text("Choose File");
-          $("#display").empty();
+          $("#displayInfo").remove();
         });
 
         var buttonData = "";
@@ -302,8 +304,8 @@
         // );
         // mymap.addLayer(backgroundLayer);
 
-        var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
-        // var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
+        // var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
         var lyrTopo = L.tileLayer.provider("OpenTopoMap");
         var lyrImagery = L.tileLayer.provider("Esri.WorldImagery");
         // var lyrWaterColor = L.tileLayer.provider("Stamen.Watercolor");
@@ -689,6 +691,39 @@
           }
         });
 
+        $.ajax({
+          url: "load_tables.php",
+          dataType: "json",
+          success: function(response) {
+            if (JSON.stringify(response) !== JSON.stringify(tables)) {
+              length = response.length;
+              buttonData = "";
+              buttonData += "<option selected disabled>Choose Map</option>";
+              for (var i = 0; i < length; i++) {
+                if (response[i].table_name == "project") {
+                  buttonData +=
+                    "<option id='optionData' value='" +
+                    response[i].table_name +
+                    "' selected>" +
+                    response[i].table_name +
+                    "</option>";
+                } else {
+                  buttonData +=
+                    "<option id='optionData' value='" +
+                    response[i].table_name +
+                    "'>" +
+                    response[i].table_name +
+                    "</option>";
+                }
+              }
+              $("#displayMaps")
+                .empty()
+                .append(buttonData);
+              tables = response;
+            }
+          }
+        });
+
         setInterval(function() {
           $.ajax({
             url: "load_tables.php",
@@ -697,23 +732,14 @@
               if (JSON.stringify(response) !== JSON.stringify(tables)) {
                 length = response.length;
                 buttonData = "";
-                buttonData += "<option disabled>Choose Map</option>";
+                buttonData += "<option selected disabled>Choose Map</option>";
                 for (var i = 0; i < length; i++) {
-                  if (response[i].table_name == "project") {
-                    buttonData +=
-                      "<option id='optionData' value='" +
-                      response[i].table_name +
-                      "' selected>" +
-                      response[i].table_name +
-                      "</option>";
-                  } else {
-                    buttonData +=
-                      "<option id='optionData' value='" +
-                      response[i].table_name +
-                      "'>" +
-                      response[i].table_name +
-                      "</option>";
-                  }
+                  buttonData +=
+                    "<option id='optionData' value='" +
+                    response[i].table_name +
+                    "'>" +
+                    response[i].table_name +
+                    "</option>";
                 }
                 $("#displayMaps")
                   .empty()
