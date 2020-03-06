@@ -863,6 +863,9 @@
             var post = 0;
             var others = 0;
 
+            if (layerAttractions) {
+              layerAttractions.remove();
+            }
             layerAttractions = L.geoJSON(response, {
               pointToLayer: function(feature, latlng) {
                 if (feature.properties.education == "SSC") {
