@@ -160,7 +160,7 @@
                       </button>
                     </form>
                     <div id="displayInfo">
-                      <div id="display"></div>
+                      <!-- <div id="display"></div> -->
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -273,6 +273,7 @@
             cache: false,
             processData: false,
             success: function(response) {
+              $("#displayInfo").append("<div id='display'></div>");
               $("#display")
                 .empty()
                 .addClass("alert alert-secondary")
@@ -285,7 +286,7 @@
         $("#closeButton1,#closeButton2").on("click", function() {
           $("#tableName").val("");
           $("#chooseFile").text("Choose File");
-          $("#displayInfo").remove();
+          $("#display").remove();
         });
 
         var buttonData = "";
@@ -656,6 +657,9 @@
         var ctlMagnifier;
         var ctlMagnifyingGlass;
         var ctlMagnifiedTiles = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        // var ctlMagnifiedTiles = L.tileLayer(
+        //   "http://localhost:4040/tile/{z}/{x}/{y}.png"
+        // );
 
         ctlMagnifier = L.easyButton({
           states: [
@@ -690,7 +694,7 @@
             displayMarkers(response);
           }
         });
-
+        // L.tileLayer.provider("OpenStreetMap.Mapnik");
         $.ajax({
           url: "load_tables.php",
           dataType: "json",
