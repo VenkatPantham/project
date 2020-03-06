@@ -24,7 +24,7 @@
     <script src="src/plugins/leaflet.spin.min.js"></script>
     <script src="src/plugins/spin.min.js"></script>
     <script src="src/plugins/easy-button.js"></script>
-    <!-- <script src="src/plugins/bouncemarker.js"></script> -->
+    <script src="src/plugins/bouncemarker.js"></script>
     <script src="src/plugins/Leaflet.PolylineMeasure.js"></script>
     <script src="src/plugins/leaflet.awesome-markers.min.js"></script>
     <script src="src/plugins/leaflet-providers.js"></script>
@@ -361,19 +361,26 @@
         var petrolLayer;
 
         wardLayer = L.geoJSON.ajax("load_wards.php", {
-          // style: {
-          // fillColor: "blue",
-          // weight: 2,
-          // opacity: 1,
-          // color: "black", //Outline color
-          // fillOpacity: 0.7,
-          // },
+          style: {
+            color: "red",
+            weight: 2,
+            opacity: 1,
+            fillColor: "red",
+            fillOpacity: 0.1
+          },
           onEachFeature: function(feature, layer) {
             layer.bindPopup("Ward No : " + feature.properties.ward_no);
           }
         });
 
         slumLayer = L.geoJSON.ajax("load_slums.php", {
+          style: {
+            color: "brown",
+            weight: 2,
+            opacity: 1,
+            fillColor: "brown",
+            fillOpacity: 0.2
+          },
           onEachFeature: function(feature, layer) {
             layer.bindPopup("Area Name : " + feature.properties.name);
           }
@@ -388,7 +395,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -406,7 +413,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -424,7 +431,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           }
@@ -439,7 +446,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           }
@@ -454,7 +461,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -472,7 +479,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -490,7 +497,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -508,7 +515,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -526,7 +533,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -544,7 +551,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -562,7 +569,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -580,7 +587,7 @@
               iconColor: "white"
             });
             return L.marker(latlng, {
-              //bounceOnAdd: true,
+              bounceOnAdd: true,
               icon: marker
             });
           },
@@ -777,12 +784,6 @@
           if (layerAttractions) {
             layerAttractions.remove();
           }
-          // var redMarker = L.AwesomeMarkers.icon({
-          //   icon: "map-pin",
-          //   prefix: "fa",
-          //   markerColor: "transparent",
-          //   iconColor: "#3480eb"
-          // });
           layerAttractions = L.geoJSON(response, {
             pointToLayer: function(feature, latlng) {
               if (feature.properties.city == "Rajahmundry") {
