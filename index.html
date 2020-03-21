@@ -207,7 +207,9 @@
           </ul>
         </div>
         <div class="btn-block btn-group">
-          <button type="button" id="area" class="btn btn-primary">Area</button>
+          <button type="button" id="area" class="btn btn-primary">
+            Area
+          </button>
           <button
             type="button"
             class="btn btn-primary dropdown-toggle dropdown-toggle-split"
@@ -359,6 +361,31 @@
         var parkLayer;
         var waterLayer;
         var petrolLayer;
+
+        setInterval(function() {
+          $("#displayMaps").on("change", function() {
+            var table = $(this).val();
+            $.ajax({
+              type: "post",
+              url: "load_data.php",
+              data: {
+                table: $(this).val()
+              },
+              success: function(response) {
+                if (JSON.stringify(response) !== JSON.stringify(data)) {
+                  if (table == "project") {
+                    displayMarkers(response);
+                    data = response;
+                  } else {
+                    window.location.replace(
+                      "http://localhost/Project/gis/other.html?"+table
+                    );
+                  }
+                }
+              }
+            });
+          });
+        }, 1000);
 
         wardLayer = L.geoJSON.ajax("load_wards.php", {
           style: {
@@ -701,7 +728,7 @@
             displayMarkers(response);
           }
         });
-        // L.tileLayer.provider("OpenStreetMap.Mapnik");
+
         $.ajax({
           url: "load_tables.php",
           dataType: "json",
@@ -758,23 +785,6 @@
                 tables = response;
               }
             }
-          });
-
-          $("#displayMaps").on("change", function() {
-            var table = $(this).val();
-            $.ajax({
-              type: "post",
-              url: "load_data.php",
-              data: {
-                table: $(this).val()
-              },
-              success: function(response) {
-                if (JSON.stringify(response) !== JSON.stringify(data)) {
-                  displayMarkers(response);
-                  data = response;
-                }
-              }
-            });
           });
         }, 1000);
 

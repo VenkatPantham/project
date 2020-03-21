@@ -1,3 +1,9 @@
+CREATE OR REPLACE FUNCTION load_csv_file(
+    target_table text,
+    csv_path text,
+    col_count integer)
+  RETURNS void AS
+$BODY$
 
 declare
 
@@ -31,7 +37,7 @@ begin
 
     -- delete the columns row
     execute format('delete from temp_table where %s = %L', col_first, col_first);
-	
+
 	-- add ID row
 	execute format('alter table temp_table add column id SERIAL PRIMARY KEY');
 
@@ -42,3 +48,8 @@ begin
 
 end;
 
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION load_csv_file(text, text, integer)
+  OWNER TO postgres;

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project</title>
+    <link rel="stylesheet" href="src/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="src/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="src/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="src/plugins/easy-button.css" />
+    <link rel="stylesheet" href="src/plugins/Leaflet.PolylineMeasure.css" />
+    <link rel="stylesheet" href="src/plugins/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="src/plugins/leaflet.magnifyingglass.css" />
+    <script src="src/jquery.min.js"></script>
+    <script src="src/js/bootstrap.bundle.min.js"></script>
+    <script src="src/leaflet.js"></script>
+    <script src="src/leaflet.ajax.min.js"></script>
+    <script src="src/plugins/leaflet.spin.min.js"></script>
+    <script src="src/plugins/spin.min.js"></script>
+    <script src="src/plugins/easy-button.js"></script>
+    <script src="src/plugins/Leaflet.PolylineMeasure.js"></script>
+    <script src="src/plugins/leaflet.awesome-markers.min.js"></script>
+    <script src="src/plugins/leaflet-providers.js"></script>
+    <script src="src/plugins/leaflet.magnifyingglass.js"></script>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light shadow p-2 mb-3 bg-white rounded"
+    >
+      <a class="navbar-brand" href="index.html">Poverty</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <!-- <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="form.html">Form</a>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <span
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Categories
+            </span>
+            <div
+              id="dropdownTable"
+              class="dropdown-menu"
+              aria-labelledby="navbarDropdown"
+            ></div>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+          </li>
+          <li id="tableMenu" class="nav-item">
+            <form class="form-inline">
+              <select id="displayMaps" class="form-control"> </select>
+            </form>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-right">
+          <li id="fileUpload">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModalLong"
+            >
+              Upload Files
+            </button>
+            <div
+              class="modal fade"
+              id="exampleModalLong"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLongTitle"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                      Upload your Files !!!
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      id="closeButton1"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="alert alert-info">
+                      <strong>Info!</strong> Upload only CSV files.
+                    </div>
+                    <form id="uploadFile">
+                      <div class="form-group">
+                        <label>Table Name :</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="tableName"
+                          name="tableName"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Custom File :</label>
+                        <div class="custom-file">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            id="fileToUpload"
+                            name="fileToUpload"
+                          />
+                          <label
+                            id="chooseFile"
+                            class="custom-file-label"
+                            for="customFile"
+                            >Choose file</label
+                          >
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        id="uploadFile"
+                        class="btn btn-primary"
+                      >
+                        Upload
+                      </button>
+                    </form>
+                    <div id="displayInfo">
+                      <!-- <div id="display"></div> -->
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="closeButton2"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div id="main_panel" class="col-md-12"></div>
+    <div id="table_panel"></div>
+    <div id="example-table"></div>
+
+    <script>
+      var table = window.location.href.replace(
+        "http://localhost/Project/gis/other.html?",
+        ""
+      );
+
+      $("document").ready(function() {
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this)
+            .val()
+            .split("\\")
+            .pop();
+          $(this)
+            .siblings(".custom-file-label")
+            .addClass("selected")
+            .html(fileName);
+        });
+
+        $("#uploadFile").on("submit", function(e) {
+          e.preventDefault();
+          $.ajax({
+            type: "post",
+            url: "upload_file.php",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(response) {
+              $("#displayInfo").append("<div id='display'></div>");
+              $("#display")
+                .empty()
+                .addClass("alert alert-secondary")
+                .append(response)
+                .show();
+            }
+          });
+        });
+
+        $("#closeButton1,#closeButton2").on("click", function() {
+          $("#tableName").val("");
+          $("#chooseFile").text("Choose File");
+          $("#display").remove();
+        });
+
+        var buttonData = "";
+        var mymap = L.map("main_panel", {
+          center: [17.0314102, 81.8559891],
+          zoom: 11,
+          zoomControl: false,
+          attributionControl: false
+        });
+
+        mymap.spin(true);
+
+        // var backgroundLayer = L.tileLayer(
+        //   // "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+        //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        // );
+        // mymap.addLayer(backgroundLayer);
+
+        var lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        // var lyrOSM = L.tileLayer("http://localhost:4040/tile/{z}/{x}/{y}.png");
+        var lyrTopo = L.tileLayer.provider("OpenTopoMap");
+        var lyrImagery = L.tileLayer.provider("Esri.WorldImagery");
+        // var lyrWaterColor = L.tileLayer.provider("Stamen.Watercolor");
+        mymap.addLayer(lyrOSM);
+
+        lyrOSM.on("loading", function() {
+          mymap.spin(true);
+        });
+        lyrOSM.on("load", function() {
+          mymap.spin(false);
+        });
+
+        mymap.on("baselayerchange", function(e) {
+          mymap.spin(true);
+          e.layer.on("loading", function() {
+            mymap.spin(true);
+          });
+          e.layer.on("load", function() {
+            mymap.spin(false);
+          });
+        });
+
+        var basemaps = {
+          "Open Street": lyrOSM,
+          Topo: lyrTopo,
+          Imagery: lyrImagery
+          // Watercolor: lyrWaterColor
+        };
+
+        var ctlLayers = L.control.layers(basemaps).addTo(mymap);
+        var layerAttractions;
+        var tables;
+        var data;
+        var ctlMagnifier;
+        var ctlMagnifyingGlass;
+
+        setInterval(function() {
+          $("#displayMaps").on("change", function() {
+            var table = $(this).val();
+            $.ajax({
+              type: "post",
+              url: "load_data.php",
+              data: {
+                table: $(this).val()
+              },
+              success: function(response) {
+                if (JSON.stringify(response) !== JSON.stringify(data)) {
+                  if (table == "project") {
+                    window.location.replace(
+                      "http://localhost/Project/gis/index.html"
+                    );
+                  } else {
+                    displayMarkers(response);
+                    data = response;
+                  }
+                }
+              }
+            });
+          });
+        }, 1000);
+
+        L.control
+          .polylineMeasure({
+            position: "topleft",
+            unit: "metres"
+          })
+          .addTo(mymap);
+        var ctlMagnifiedTiles = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        // var ctlMagnifiedTiles = L.tileLayer(
+        //   "http://localhost:4040/tile/{z}/{x}/{y}.png"
+        // );
+
+        ctlMagnifier = L.easyButton({
+          states: [
+            {
+              stateName: "magnifier-off",
+              icon: "fa-search",
+              title: "Turn on Magnifier",
+              onClick: function() {
+                ctlMagnifyingGlass = L.magnifyingGlass({
+                  layers: [ctlMagnifiedTiles]
+                });
+                mymap.addLayer(ctlMagnifyingGlass);
+                this.state("magnifier-on");
+              }
+            },
+            {
+              stateName: "magnifier-on",
+              icon: "fa-search-minus",
+              title: "Turn off Magnifier",
+              onClick: function() {
+                mymap.removeLayer(ctlMagnifyingGlass);
+                this.state("magnifier-off");
+              }
+            }
+          ]
+        }).addTo(mymap);
+
+        $.ajax({
+          type: "post",
+          url: "load_data.php",
+          data: {
+            table: table
+          },
+          success: function(response) {
+            displayMarkers(response);
+          }
+        });
+
+        $.ajax({
+          url: "load_tables.php",
+          dataType: "json",
+          success: function(response) {
+            if (JSON.stringify(response) !== JSON.stringify(tables)) {
+              length = response.length;
+              buttonData = "";
+              buttonData += "<option selected disabled>Choose Map</option>";
+              for (var i = 0; i < length; i++) {
+                if (response[i].table_name == table) {
+                  buttonData +=
+                    "<option id='optionData' value='" +
+                    response[i].table_name +
+                    "' selected>" +
+                    response[i].table_name +
+                    "</option>";
+                } else {
+                  buttonData +=
+                    "<option id='optionData' value='" +
+                    response[i].table_name +
+                    "'>" +
+                    response[i].table_name +
+                    "</option>";
+                }
+              }
+              $("#displayMaps")
+                .empty()
+                .append(buttonData);
+              tables = response;
+            }
+          }
+        });
+
+        setInterval(function() {
+          $.ajax({
+            url: "load_tables.php",
+            dataType: "json",
+            success: function(response) {
+              if (JSON.stringify(response) !== JSON.stringify(tables)) {
+                length = response.length;
+                buttonData = "";
+                buttonData += "<option selected disabled>Choose Map</option>";
+                for (var i = 0; i < length; i++) {
+                  buttonData +=
+                    "<option id='optionData' value='" +
+                    response[i].table_name +
+                    "'>" +
+                    response[i].table_name +
+                    "</option>";
+                }
+                $("#displayMaps")
+                  .empty()
+                  .append(buttonData);
+                tables = response;
+              }
+            }
+          });
+        }, 1000);
+
+        function displayMarkers(response) {
+          //   table.setData(tempData);
+          if (layerAttractions) {
+            layerAttractions.remove();
+          }
+          layerAttractions = L.geoJSON(response, {
+            pointToLayer: function(feature, latlng) {
+              return L.marker(latlng, {
+                // bounceOnAdd: true
+                // icon: redMarker
+              });
+            },
+            onEachFeature: function(feature, layerAttractions) {
+              layerAttractions.on("click", displayData);
+            }
+          });
+          layerAttractions.addTo(mymap);
+          mymap.fitBounds(layerAttractions.getBounds());
+        }
+        function displayData(e) {
+          var tableCols = [];
+          var tableData = "";
+          tableData +=
+            "<table class='table table-bordered'>";
+          tableData += "<thead class='thead-light'>";
+          tableData += "<tr>";
+          for (var key in e.target.feature.properties) {
+            var val = key.replace("_", " ");
+            tableCols.push(val);
+          }
+          for (var i = 0; i < tableCols.length; i++) {
+            tableData += "<th>" + tableCols[i] + "</th>";
+          }
+          tableData += "<th>Latitude</th>";
+          tableData += "<th>Longitude</th>";
+          tableData += "</tr>";
+          tableData += "</thead>";
+          tableData += "<tbody style='overflow:scroll'>";
+          tableData += "<tr>";
+          for (var i in e.target.feature.properties) {
+            tableData += "<td>" + e.target.feature.properties[i] + "</td>";
+          }
+          tableData += "<td>" + e.latlng.lat + "</td>";
+          tableData += "<td>" + e.latlng.lng + "</td>";
+          tableData += "</tr>";
+          tableData += "</tbody";
+          tableData += "</table>";
+          $("#table_panel")
+            .empty()
+            .append(tableData);
+        }
+      });
+    </script>
+  </body>
+</html>
