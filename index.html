@@ -361,29 +361,31 @@
         var parkLayer;
         var waterLayer;
         var petrolLayer;
+        var table = "project";
+
+        $("#displayMaps").on("change", function() {
+          table = $(this).val();
+        });
 
         setInterval(function() {
-          $("#displayMaps").on("change", function() {
-            var table = $(this).val();
-            $.ajax({
-              type: "post",
-              url: "load_data.php",
-              data: {
-                table: $(this).val()
-              },
-              success: function(response) {
-                if (JSON.stringify(response) !== JSON.stringify(data)) {
-                  if (table == "project") {
-                    displayMarkers(response);
-                    data = response;
-                  } else {
-                    window.location.replace(
-                      "http://localhost/Project/gis/other.html?"+table
-                    );
-                  }
+          $.ajax({
+            type: "post",
+            url: "load_data.php",
+            data: {
+              table: table
+            },
+            success: function(response) {
+              if (JSON.stringify(response) !== JSON.stringify(data)) {
+                if (table == "project") {
+                  displayMarkers(response);
+                  data = response;
+                } else {
+                  window.location.replace(
+                    "http://localhost/Project/gis/other.html?" + table
+                  );
                 }
               }
-            });
+            }
           });
         }, 1000);
 

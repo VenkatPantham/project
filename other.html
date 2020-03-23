@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="src/plugins/Leaflet.PolylineMeasure.css" />
     <link rel="stylesheet" href="src/plugins/leaflet.awesome-markers.css" />
     <link rel="stylesheet" href="src/plugins/leaflet.magnifyingglass.css" />
+    <!-- <link rel="stylesheet" href="src/plugins/tabulator.min.css.css" /> -->
     <script src="src/jquery.min.js"></script>
     <script src="src/js/bootstrap.bundle.min.js"></script>
     <script src="src/leaflet.js"></script>
@@ -177,7 +178,7 @@
     <div id="example-table"></div>
 
     <script>
-      var table = window.location.href.replace(
+      var tableValue = window.location.href.replace(
         "http://localhost/Project/gis/other.html?",
         ""
       );
@@ -273,29 +274,39 @@
         var data;
         var ctlMagnifier;
         var ctlMagnifyingGlass;
+        var table = tableValue;
+
+        $("#displayMaps").on("change", function() {
+          $("#table_panel").empty();
+          table = $(this).val();
+        });
+        console.log(table);
 
         setInterval(function() {
-          $("#displayMaps").on("change", function() {
-            var table = $(this).val();
-            $.ajax({
-              type: "post",
-              url: "load_data.php",
-              data: {
-                table: $(this).val()
-              },
-              success: function(response) {
-                if (JSON.stringify(response) !== JSON.stringify(data)) {
-                  if (table == "project") {
-                    window.location.replace(
-                      "http://localhost/Project/gis/index.html"
-                    );
-                  } else {
-                    displayMarkers(response);
-                    data = response;
-                  }
+          $.ajax({
+            type: "post",
+            url: "load_data.php",
+            data: {
+              table: table
+            },
+            success: function(response) {
+              if (JSON.stringify(response) !== JSON.stringify(data)) {
+                if (table == "project") {
+                  window.location.replace(
+                    "http://localhost/Project/gis/index.html"
+                  );
+                } else if (table != tableValue) {
+                  tableValue = table;
+                  var pageUrl = "?" + table;
+                  window.history.replaceState({}, null, pageUrl);
+                  displayMarkers(response);
+                  data = response;
+                } else {
+                  displayMarkers(response);
+                  data = response;
                 }
               }
-            });
+            }
           });
         }, 1000);
 
@@ -340,7 +351,7 @@
           type: "post",
           url: "load_data.php",
           data: {
-            table: table
+            table: tableValue
           },
           success: function(response) {
             displayMarkers(response);
@@ -356,7 +367,7 @@
               buttonData = "";
               buttonData += "<option selected disabled>Choose Map</option>";
               for (var i = 0; i < length; i++) {
-                if (response[i].table_name == table) {
+                if (response[i].table_name == tableValue) {
                   buttonData +=
                     "<option id='optionData' value='" +
                     response[i].table_name +
@@ -407,7 +418,6 @@
         }, 1000);
 
         function displayMarkers(response) {
-          //   table.setData(tempData);
           if (layerAttractions) {
             layerAttractions.remove();
           }
@@ -425,11 +435,11 @@
           layerAttractions.addTo(mymap);
           mymap.fitBounds(layerAttractions.getBounds());
         }
+
         function displayData(e) {
           var tableCols = [];
           var tableData = "";
-          tableData +=
-            "<table class='table table-bordered'>";
+          tableData += "<table class='table table-bordered'>";
           tableData += "<thead class='thead-light'>";
           tableData += "<tr>";
           for (var key in e.target.feature.properties) {
